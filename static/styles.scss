@@ -1,0 +1,21 @@
+$background: #f7f6f3;
+$surface: #fffdf9;
+$border: #ded8cf;
+$text: #2f2119;
+$muted: #8b8178;
+$dark-brown: #2d1a12;
+$accent: #b76832;
+$map-bg: #efe2cf;
+
+body {
+    margin: 0;
+    background-color: $background;
+    color: $text;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.brand {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
