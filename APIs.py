@@ -2,7 +2,9 @@ import os
 import requests
 from dotenv import load_dotenv
 from pathlib import Path
+import requests
 # from data.data_pipeline import create_coffee_dataframe
+
 
 load_dotenv()
 PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
@@ -10,6 +12,7 @@ PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby"
 
 ORS_API_KEY = os.getenv("OPENROUTESERVICE_API_KEY")
 ORS_MATRIX_URL = ("https://api.openrouteservice.org/v2/matrix/driving-car")
+
 
 def get_nearby_coffee_shops(latitude, longitude, radius=5000):
     headers = {
@@ -47,7 +50,7 @@ def get_nearby_coffee_shops(latitude, longitude, radius=5000):
 
     return response.json().get("places", [])
 
-def get_travel_times(origin_lat, origin_lon, coffee_shops):
+def filter_valid_places_with_route(origin_lat, origin_lon, coffee_shops):
     locations = []
 
     valid_places = []
@@ -93,10 +96,38 @@ def get_travel_times(origin_lat, origin_lon, coffee_shops):
         "Content-Type": "application/json"
     }
 
-    response = requests.post(ORS_MATRIX_URL, headers=headers, json=data)
+    route_data = requests.post(ORS_MATRIX_URL, headers=headers, json=data)
+    route_data.raise_for_status()
+
+    return valid_places, route_data.json()
+
+def geocode_location(location):
+
+    url = "https://nominatim.openstreetmap.org/search"
+
+    params = {
+        "q": location,
+        "format": "json",
+        "limit": 1
+    }
+
+    headers = {
+        "User-Agent": "CoffeeSpot/1.0"
+    }
+
+    response = requests.get(url, params=params, headers=headers)
     response.raise_for_status()
 
-    return valid_places, response.json()
+    data = response.json()
+
+    if not data:
+        raise ValueError("Location could not be found.")
+
+    latitude = float(data[0]["lat"])
+    longitude = float(data[0]["lon"])
+
+    return latitude, longitude
+
 
 # New York Coordinates = 40.7128, -74.0060
 # Orlando Coordinates = 28.5383, -81.3792

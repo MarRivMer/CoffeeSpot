@@ -113,7 +113,7 @@
                     <div class="results-header">
                         <div>
                             <h2>
-                                Top matches
+                                Top Recommended
                             </h2>
 
                             <p>
@@ -121,9 +121,9 @@
                             </p>
                         </div>
                     </div>
-                        {% if coffee_shops %}
+                    {% if top_three_spots %}
 
-                        {% for place in coffee_shops %}
+                        {% for place in top_three_spots %}
                             <article class="coffee-card">
 
                                 <div class="coffee-image image-green"></div>
@@ -131,11 +131,11 @@
                                 <div class="coffee-info">
 
                                     <h3>
-                                        {{ place.get("displayName", {}).get("text", "Unknown") }}
+                                        {{ place['name'] }}
                                     </h3>
 
                                     <p class="coffee-meta">
-                                        0.8 mi · 6 min drive · ★ {{ place.get("rating", "No rating") }}
+                                        {{ place['address'] }} · {{ place['travel_time_minutes'] }} min drive · ★ {{ place['rating'] }}
                                     </p>
 
                                     <div class="tag-row">
@@ -151,9 +151,63 @@
                                 </div>
 
                                 <div class="match-score">
-                                    <strong>94</strong>
+                                    <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
                                     <span>FIT</span>
                                 </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    {% endif %}
+                    
+                    <br>
+                    
+                    <div class="results-header">
+                        <div>
+                            <h2>
+                                All Matches
+                            </h2>
+
+                            <p>
+                                Cafés nearby
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if coffee_shops %}
+
+                        {% for place in coffee_shops %}
+                            <article class="coffee-card">
+
+                                <div class="coffee-image image-green"></div>
+
+                                <div class="coffee-info">
+
+                                    <h3>
+                                        {{ place['name'] }}
+                                    </h3>
+
+                                    <p class="coffee-meta">
+                                        {{ place['address'] }} · {{ place['travel_time_minutes'] }} min drive · ★ {{ place['rating'] }}
+                                    </p>
+
+                                    <div class="tag-row">
+                                        <span class="tag">Quiet</span>
+                                        <span class="tag">Outlets</span>
+                                        <span class="tag">Wi-Fi</span>
+                                    </div>
+
+                                    <a href="details.html" class="details-link">
+                                        View details →
+                                    </a>
+
+                                </div>
+
+                                <!-- <div class="match-score">
+                                    <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
+                                    <span>FIT</span>
+                                </div> -->
 
                             </article>
 
