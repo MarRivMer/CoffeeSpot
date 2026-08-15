@@ -17,8 +17,8 @@
 
             <nav class="nav-links">
                 <a href="" class="active">Discover</a>
-                <a href="compare.html" class="not-active">Compare</a>
-                <a href="saved.html" class="not-active">Saved</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
             </nav>
 
         </header>
@@ -135,7 +135,7 @@
                                     </h3>
 
                                     <p class="coffee-meta">
-                                        {{ place['address'] }} · {{ place['travel_time_minutes'] }} min drive · ★ {{ place['rating'] }}
+                                        {{ place['address'] }} · {{ place['travel_time_minutes']|round|int }} min drive · ★ {{ place['rating'] }}
                                     </p>
 
                                     <div class="tag-row">
@@ -144,7 +144,7 @@
                                         <span class="tag">Wi-Fi</span>
                                     </div>
 
-                                    <a href="details.html" class="details-link">
+                                    <a href="{{ url_for('details_screen') }}" class="details-link">
                                         View details →
                                     </a>
 
@@ -189,7 +189,7 @@
                                     </h3>
 
                                     <p class="coffee-meta">
-                                        {{ place['address'] }} · {{ place['travel_time_minutes'] }} min drive · ★ {{ place['rating'] }}
+                                        {{ place['address'] }} · {{ place['travel_time_minutes']|round|int }} min drive · ★ {{ place['rating'] }}
                                     </p>
 
                                     <div class="tag-row">

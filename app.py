@@ -7,12 +7,15 @@ from ML.predictor import predict_coffee_spot
 
 app = Flask(__name__)
 
+coffee_spot_df = []
+map_html = None
+top_three_spots = []
+
+
 @app.route('/', methods=["GET", "POST"])
 def discover_screen():
+    global coffee_spot_df, map_html, top_three_spots
     coffee_shops = []
-    coffee_spot_df = []
-    map_html = None
-    top_three_spots = []
 
     if request.method == "POST":
         location = request.form['location']
@@ -24,7 +27,7 @@ def discover_screen():
         valid_shops, route_data = filter_valid_places_with_route(latitude, longitude, coffee_shops)
         coffee_spot_df = create_coffee_dataframe(valid_shops, route_data, purpose)
 
-        # # ----- Map Logic -----
+        # ----- Map Logic -----
         coffee_map = folium.Map(location=[latitude, longitude], zoom_start=13)
         folium.Marker([latitude, longitude], popup="Search Location", tooltip="Search Location").add_to(coffee_map)
 
@@ -47,8 +50,7 @@ def discover_screen():
 
         map_html = coffee_map._repr_html_()
 
-        # # ----- AI MLP Model Recommendation Logic -----
-
+        # ----- AI MLP Model Recommendation Logic -----
         predictions = []
         match_scores = []
 
@@ -82,21 +84,18 @@ def discover_screen():
         
     return render_template('home.html', coffee_shops=coffee_spot_df, map_html=map_html, top_three_spots=top_three_spots)
 
-@app.route('/Compare')
+@app.route('/compare')
 def compare_screen():
-    return None
+    return render_template('compare.html', top_three_spots=top_three_spots)
 
-@app.route('/Saved')
+@app.route('/saved')
 def saved_screen():
-    return None
+    return render_template('saved.html')
 
-@app.route('/Details')
+@app.route('/details')
 def details_screen():
-    return None
 
-
-
-
+    return render_template('details.html')
 
 
 
