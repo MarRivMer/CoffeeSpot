@@ -1,15 +1,197 @@
 {% extends 'base.html' %}
 
+{% block head %}
+
+    <title>Coffee Spot - Saved</title>
+    <link rel="stylesheet" href="../static/styles.css">
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="saved-page">
+
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="" class="active">Saved</a>
+            </nav>
+
+        </header>
 
 
-{% block head %}{% endblock %}
+        <section class="saved-header">
+
+            <h1>
+                Your saved coffee spots
+            </h1>
+
+            <p>
+                A shortlist for the next time you need a place to work, meet, or reset.
+            </p>
+
+        </section>
 
 
+        <section class="saved-content">
 
-{% block body %} 
+            <!-- LEFT SIDE -->
+            <section class="saved-list">
 
-    <header>
-        Saved Page!
-    </header>
+                <!-- Saved Shop 1 -->
+                <article class="saved-card">
+
+                    <div class="saved-image image-green"></div>
+
+                    <div class="saved-info">
+
+                        <h3>
+                            Juniper Coffee House
+                        </h3>
+
+                        <p class="saved-meta">
+                            Saved today · 0.8 mi · ★ 4.7
+                        </p>
+
+                        <div class="tag-row">
+                            <span class="tag">Quiet</span>
+                            <span class="tag">Outlets</span>
+                            <span class="tag">Wi-Fi</span>
+                        </div>
+
+                        <a href="{{ url_for('details_screen') }}" class="details-link">
+                            View details →
+                        </a>
+
+                    </div>
+
+                    <div class="match-score">
+                        <strong>94</strong>
+                        <span>FIT</span>
+                    </div>
+
+                </article>
+
+
+                <!-- Saved Shop 2 -->
+                <article class="saved-card">
+
+                    <div class="saved-image image-orange"></div>
+
+                    <div class="saved-info">
+
+                        <h3>
+                            Common Grounds
+                        </h3>
+
+                        <p class="saved-meta">
+                            Saved yesterday · 1.2 mi · ★ 4.6
+                        </p>
+
+                        <div class="tag-row">
+                            <span class="tag">Study</span>
+                            <span class="tag">Late hours</span>
+                            <span class="tag">Pastries</span>
+                        </div>
+
+                        <a href="{{ url_for('details_screen') }}" class="details-link">
+                            View details →
+                        </a>
+
+                    </div>
+
+                    <div class="match-score">
+                        <strong>91</strong>
+                        <span>FIT</span>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- RIGHT SIDE -->
+            <aside class="saved-sidebar">
+
+                <section class="quick-decision-card">
+
+                    <h2>
+                        Quick decision
+                    </h2>
+
+                    <p class="sidebar-copy">
+                        Need a recommendation right now?
+                    </p>
+
+                    <div class="quick-result">
+
+                        <p class="quick-label">
+                            Best for focused work
+                        </p>
+
+                        <h3>
+                            Juniper Coffee House
+                        </h3>
+
+                        <p class="quick-meta">
+                            94 fit · 7 min away
+                        </p>
+
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="secondary-button">
+                            Compare saved
+                        </button>
+
+                        <button class="primary-button">
+                            Pick for me
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <section class="preference-card">
+
+                    <h2>
+                        Your preference profile
+                    </h2>
+
+                    <div class="preference-row">
+                        <span>Quiet / focus</span>
+                        <strong>40%</strong>
+                    </div>
+
+                    <div class="preference-row">
+                        <span>Travel time</span>
+                        <strong>30%</strong>
+                    </div>
+
+                    <div class="preference-row">
+                        <span>Rating</span>
+                        <strong>20%</strong>
+                    </div>
+
+                    <div class="preference-row">
+                        <span>Price</span>
+                        <strong>10%</strong>
+                    </div>
+
+                </section>
+
+            </aside>
+
+        </section>
+
+    </div>
 
 {% endblock %}

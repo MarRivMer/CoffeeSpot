@@ -1,13 +1,316 @@
 {% extends 'base.html' %}
 
-{% block head %}{% endblock %}
+{% block head %}
+    <title>Coffee Spot - Details</title>
+    <link rel="stylesheet" href="../static/styles.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="details-page">
+
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('discover_screen') }}" class="active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}">Compare</a>
+                <a href="{{ url_for('saved_screen') }}">Saved</a>
+            </nav>
+
+        </header>
 
 
+        <a href="{{ url_for('discover_screen') }}" class="back-link">
+            ← Back to results
+        </a>
 
-{% block body %} 
 
-    <header>
-        Details Page!
-    </header>
+        <section class="shop-hero">
+
+            <div class="shop-hero-image">
+                <div class="shop-logo-text">
+                    <strong>JUNIPER</strong>
+                    <span>COFFEE HOUSE</span>
+                </div>
+            </div>
+
+
+            <div class="shop-hero-info">
+
+                <h1>
+                    Juniper Coffee House
+                </h1>
+
+                <p class="shop-meta">
+                    0.8 mi away · 6 min drive · ★ 4.7 (328)
+                </p>
+
+                <div class="tag-row">
+                    <span class="tag">Quiet</span>
+                    <span class="tag">Wi-Fi</span>
+                    <span class="tag">Outlets</span>
+                </div>
+
+                <p class="open-status">
+                    Open until 8:00 PM
+                </p>
+
+            </div>
+
+
+            <div class="hero-actions">
+
+                <button class="secondary-button">
+                    Directions
+                </button>
+
+                <button class="primary-button">
+                    Save spot
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="match-summary">
+
+            <div class="match-score-large">
+                <strong>94</strong>
+                <span>FIT</span>
+            </div>
+
+            <div class="match-summary-text">
+                <h2>
+                    Excellent match for you
+                </h2>
+
+                <p>
+                    Based on your current priorities and estimated travel time.
+                </p>
+            </div>
+
+        </section>
+
+
+        <section class="metric-grid">
+
+            <article class="metric-card">
+
+                <p class="metric-label">
+                    Travel time
+                </p>
+
+                <h3>
+                    7 min
+                </h3>
+
+                <p class="metric-note">
+                    Fastest
+                </p>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <p class="metric-label">
+                    Rating
+                </p>
+
+                <h3>
+                    4.7
+                </h3>
+
+                <p class="metric-note">
+                    Excellent
+                </p>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <p class="metric-label">
+                    Price
+                </p>
+
+                <h3>
+                    $$
+                </h3>
+
+                <p class="metric-note">
+                    Moderate
+                </p>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <p class="metric-label">
+                    Noise
+                </p>
+
+                <h3>
+                    Low
+                </h3>
+
+                <p class="metric-note">
+                    Good for focus
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <section class="details-lower-grid">
+
+            <section class="matters-section">
+
+                <h2>
+                    What matters here
+                </h2>
+
+
+                <div class="matter-row">
+
+                    <div class="matter-label">
+                        Wi-Fi reliability
+                    </div>
+
+                    <div class="matter-value">
+                        Very good
+                    </div>
+
+                    <div class="matter-meter">
+                        <div class="meter-track">
+                            <div class="meter-fill width-92"></div>
+                        </div>
+
+                        <span>92%</span>
+                    </div>
+
+                </div>
+
+
+                <div class="matter-row">
+
+                    <div class="matter-label">
+                        Outlet availability
+                    </div>
+
+                    <div class="matter-value">
+                        High
+                    </div>
+
+                    <div class="matter-meter">
+                        <div class="meter-track">
+                            <div class="meter-fill width-88"></div>
+                        </div>
+
+                        <span>88%</span>
+                    </div>
+
+                </div>
+
+
+                <div class="matter-row">
+
+                    <div class="matter-label">
+                        Quiet-work fit
+                    </div>
+
+                    <div class="matter-value">
+                        Excellent
+                    </div>
+
+                    <div class="matter-meter">
+                        <div class="meter-track">
+                            <div class="meter-fill width-95"></div>
+                        </div>
+
+                        <span>95%</span>
+                    </div>
+
+                </div>
+
+
+                <div class="matter-row">
+
+                    <div class="matter-label">
+                        Parking ease
+                    </div>
+
+                    <div class="matter-value">
+                        Moderate
+                    </div>
+
+                    <div class="matter-meter">
+                        <div class="meter-track">
+                            <div class="meter-fill width-68"></div>
+                        </div>
+
+                        <span>68%</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <aside class="ranking-card">
+
+                <h2>
+                    Why it ranks highly
+                </h2>
+
+                <ul class="ranking-list">
+
+                    <li>
+                        <span class="positive">✓</span>
+                        Strong quiet-work environment
+                    </li>
+
+                    <li>
+                        <span class="positive">✓</span>
+                        Shortest estimated drive
+                    </li>
+
+                    <li>
+                        <span class="positive">✓</span>
+                        Above-average rating
+                    </li>
+
+                    <li>
+                        <span class="warning">△</span>
+                        Parking may be limited after 5 PM
+                    </li>
+
+                </ul>
+
+
+                <div class="ranking-actions">
+
+                    <button class="secondary-button">
+                        Add to compare
+                    </button>
+
+                    <button class="primary-button">
+                        Choose Juniper
+                    </button>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </div>
 
 {% endblock %}

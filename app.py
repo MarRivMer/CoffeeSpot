@@ -7,6 +7,8 @@ from ML.predictor import predict_coffee_spot
 
 app = Flask(__name__)
 
+saved_spots = []
+
 coffee_spot_df = []
 map_html = None
 top_three_spots = []
