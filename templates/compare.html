@@ -71,7 +71,6 @@
                 {% set spot2 = top_three_spots[1] %}
                 {% set spot3 = top_three_spots[2] %}
 
-                <!-- Drive Time -->
                 <div class="compare-label alt-row">
                     Drive time
                 </div>
@@ -87,25 +86,7 @@
                 <div class="compare-value alt-row">
                     {{ spot3['travel_time_minutes']|round|int }} min
                 </div>
-                
-                
-                <!-- Quiet Work Fit -->
-                <div class="compare-label">
-                    Quiet-work fit
-                </div>
-                
-                <div class="compare-value">
-                    Excellent
-                </div>
-                
-                <div class="compare-value">
-                    Very good
-                </div>
-                
-                <div class="compare-value">
-                    Good
-                </div>
-                
+                    
                 
                 <!-- Wi-Fi -->
                 <div class="compare-label alt-row">
@@ -113,37 +94,36 @@
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Very good
+                    Excellent
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Excellent
+                    Very good
                 </div>
 
                 <div class="compare-value alt-row">
-                    Very good
+                    Weak
                 </div>
                 
                 
                 <!-- Outlets -->
                 <div class="compare-label">
-                    Outlets
+                    Serves Breakfast
                 </div>
                 
                 <div class="compare-value">
-                    High
+                    {{ spot1['serves_breakfast'] }}
                 </div>
                 
                 <div class="compare-value">
-                    Medium
+                    {{ spot2['serves_breakfast'] }}
                 </div>
                 
                 <div class="compare-value">
-                    High
+                    {{ spot3['serves_breakfast'] }}
                 </div>
                 
                 
-                <!-- Price -->
                 <div class="compare-label alt-row">
                     Price
                 </div>
@@ -185,39 +165,54 @@
                 </div>
                 
                 
-                <!-- Parking -->
+                <div class="compare-label">
+                    Outdoor Seating
+                </div>
+                
+                <div class="compare-value">
+                    {{ spot1['outdoor_seating'] }}
+                </div>
+                
+                <div class="compare-value">
+                    {{ spot2['outdoor_seating'] }}
+                </div>
+                
+                <div class="compare-value">
+                    {{ spot3['outdoor_seating'] }}
+                </div>
+
+
                 <div class="compare-label">
                     Parking
                 </div>
                 
                 <div class="compare-value">
-                    Moderate
+                    {{ spot1['parking_options'] }}
                 </div>
                 
                 <div class="compare-value">
-                    Easy
+                    {{ spot2['parking_options'] }}
                 </div>
                 
                 <div class="compare-value">
-                    Easy
+                    {{ spot3['parking_options'] }}
                 </div>
                 
                 
-                <!-- Open Late -->
                 <div class="compare-label alt-row">
                     Open late
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Until 8 PM
+                    Until {{ spot1['close_time'] }}
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Until 10 PM
+                    Until {{ spot2['close_time'] }}
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Until 9 PM
+                    Until {{ spot3['close_time'] }}
                 </div>
                 
             </section>

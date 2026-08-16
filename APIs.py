@@ -25,9 +25,22 @@ def get_nearby_coffee_shops(latitude, longitude, radius=5000):
             "places.location,"
             "places.rating,"
             "places.userRatingCount,"
+            "places.editorialSummary,"
             "places.priceLevel,"
             "places.currentOpeningHours,"
-            "places.photos"
+            "places.regularOpeningHours,"
+            "places.outdoorSeating,"
+            "places.websiteUri,"
+            "places.nationalPhoneNumber,"
+            "places.photos,"
+            "places.restroom,"
+            "places.parkingOptions,"
+            "places.curbsidePickup,"
+            "places.reservable,"
+            "places.delivery,"
+            "places.servesBreakfast,"
+            "places.regularSecondaryOpeningHours,"
+            "places.currentSecondaryOpeningHours"
         )
     }
 

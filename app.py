@@ -96,7 +96,6 @@ def saved_screen():
 
 @app.route('/details')
 def details_screen():
-
     return render_template('details.html')
 
 
