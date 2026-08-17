@@ -117,9 +117,30 @@ def saved_screen():
     global saved_spots
     return render_template('saved.html', saved_spots=saved_spots)
 
-@app.route('/details')
+@app.route('/details', methods=["GET", "POST"])
 def details_screen():
-    return render_template('details.html')
+    global coffee_spot_df, saved_spots
+    coffee_spot = None
+
+
+    if request.method == "POST":
+        place_id = request.form.get("place_id")
+
+        # Check current coffee shop results
+        for place in coffee_spot_df:
+            if place['id'] == place_id:
+                coffee_spot = place
+                break
+
+        # If not found, check saved spots
+        if coffee_spot is None:
+            for place in saved_spots:
+                if place['id'] == place_id:
+                    coffee_spot = place
+                    break    
+        
+
+    return render_template('details.html', spot=coffee_spot)
 
 
 

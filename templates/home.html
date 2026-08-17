@@ -144,9 +144,13 @@
                                         <span class="tag">Wi-Fi</span>
                                     </div>
 
-                                    <a href="{{ url_for('details_screen') }}" class="details-link">
-                                        View details →
-                                    </a>
+                                    <form action="{{ url_for('details_screen') }}" method="POST">
+                                        <input type="hidden" name="place_id" value="{{ place['id'] }}">
+
+                                        <button type="submit" class="details-link">
+                                            View details →
+                                        </button>
+                                    </form>
 
                                 </div>
 
@@ -198,9 +202,13 @@
                                         <span class="tag">Wi-Fi</span>
                                     </div>
 
-                                    <a href="details.html" class="details-link">
-                                        View details →
-                                    </a>
+                                    <form action="{{ url_for('details_screen') }}" method="POST">
+                                        <input type="hidden" name="place_id" value="{{ place['id'] }}">
+
+                                        <button type="submit" class="details-link">
+                                            View details →
+                                        </button>
+                                    </form>
 
                                 </div>
 

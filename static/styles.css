@@ -232,8 +232,12 @@ input {
 }
 
 .details-link {
-  font-size: 0.75rem;
-  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: #2f2119;
 }
 
 .match-score {

@@ -16,7 +16,7 @@
             </div>
 
             <nav class="nav-links">
-                <a href="{{ url_for('discover_screen') }}" class="active">Discover</a>
+                <a href="{{ url_for('discover_screen') }}">Discover</a>
                 <a href="{{ url_for('compare_screen') }}">Compare</a>
                 <a href="{{ url_for('saved_screen') }}">Saved</a>
             </nav>
@@ -28,288 +28,305 @@
             ← Back to results
         </a>
 
+        {% if spot %}
 
-        <section class="shop-hero">
+            <section class="shop-hero">
 
-            <div class="shop-hero-image">
-                <div class="shop-logo-text">
-                    <strong>JUNIPER</strong>
-                    <span>COFFEE HOUSE</span>
-                </div>
-            </div>
-
-
-            <div class="shop-hero-info">
-
-                <h1>
-                    Juniper Coffee House
-                </h1>
-
-                <p class="shop-meta">
-                    0.8 mi away · 6 min drive · ★ 4.7 (328)
-                </p>
-
-                <div class="tag-row">
-                    <span class="tag">Quiet</span>
-                    <span class="tag">Wi-Fi</span>
-                    <span class="tag">Outlets</span>
+                <div class="shop-hero-image">
+                    <div class="shop-logo-text">
+                        <!-- <strong> {{ spot['name'] }} </strong> -->
+                        <!-- <span>COFFEE HOUSE</span> -->
+                    </div>
                 </div>
 
-                <p class="open-status">
-                    Open until 8:00 PM
-                </p>
 
-            </div>
+                <div class="shop-hero-info">
 
+                    <h1>
+                        {{ spot['name'] }}
+                    </h1>
 
-            <div class="hero-actions">
+                    <p class="shop-meta">
+                        {{ spot['address'] }} · {{ spot['travel_time_minutes'] }} min drive · ★ {{ spot['rating'] }} ({{ spot['review_count'] }})
+                    </p>
 
-                <button class="secondary-button">
-                    Directions
-                </button>
-
-                <button class="primary-button">
-                    Save spot
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <section class="match-summary">
-
-            <div class="match-score-large">
-                <strong>94</strong>
-                <span>FIT</span>
-            </div>
-
-            <div class="match-summary-text">
-                <h2>
-                    Excellent match for you
-                </h2>
-
-                <p>
-                    Based on your current priorities and estimated travel time.
-                </p>
-            </div>
-
-        </section>
-
-
-        <section class="metric-grid">
-
-            <article class="metric-card">
-
-                <p class="metric-label">
-                    Travel time
-                </p>
-
-                <h3>
-                    7 min
-                </h3>
-
-                <p class="metric-note">
-                    Fastest
-                </p>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <p class="metric-label">
-                    Rating
-                </p>
-
-                <h3>
-                    4.7
-                </h3>
-
-                <p class="metric-note">
-                    Excellent
-                </p>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <p class="metric-label">
-                    Price
-                </p>
-
-                <h3>
-                    $$
-                </h3>
-
-                <p class="metric-note">
-                    Moderate
-                </p>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <p class="metric-label">
-                    Noise
-                </p>
-
-                <h3>
-                    Low
-                </h3>
-
-                <p class="metric-note">
-                    Good for focus
-                </p>
-
-            </article>
-
-        </section>
-
-
-        <section class="details-lower-grid">
-
-            <section class="matters-section">
-
-                <h2>
-                    What matters here
-                </h2>
-
-
-                <div class="matter-row">
-
-                    <div class="matter-label">
-                        Wi-Fi reliability
+                    <div class="tag-row">
+                        <!-- <span class="tag">Quiet</span>
+                        <span class="tag">Wi-Fi</span>
+                        <span class="tag">Outlets</span> -->
                     </div>
 
-                    <div class="matter-value">
-                        Very good
-                    </div>
-
-                    <div class="matter-meter">
-                        <div class="meter-track">
-                            <div class="meter-fill width-92"></div>
-                        </div>
-
-                        <span>92%</span>
-                    </div>
+                    <p class="open-status">
+                        Open until {{ spot['close_time'] }}
+                    </p>
 
                 </div>
 
 
-                <div class="matter-row">
+                <div class="hero-actions">
 
-                    <div class="matter-label">
-                        Outlet availability
-                    </div>
-
-                    <div class="matter-value">
-                        High
-                    </div>
-
-                    <div class="matter-meter">
-                        <div class="meter-track">
-                            <div class="meter-fill width-88"></div>
-                        </div>
-
-                        <span>88%</span>
-                    </div>
-
-                </div>
-
-
-                <div class="matter-row">
-
-                    <div class="matter-label">
-                        Quiet-work fit
-                    </div>
-
-                    <div class="matter-value">
-                        Excellent
-                    </div>
-
-                    <div class="matter-meter">
-                        <div class="meter-track">
-                            <div class="meter-fill width-95"></div>
-                        </div>
-
-                        <span>95%</span>
-                    </div>
-
-                </div>
-
-
-                <div class="matter-row">
-
-                    <div class="matter-label">
-                        Parking ease
-                    </div>
-
-                    <div class="matter-value">
-                        Moderate
-                    </div>
-
-                    <div class="matter-meter">
-                        <div class="meter-track">
-                            <div class="meter-fill width-68"></div>
-                        </div>
-
-                        <span>68%</span>
-                    </div>
+                    <button class="primary-button">
+                        Save spot
+                    </button>
 
                 </div>
 
             </section>
 
 
-            <aside class="ranking-card">
+            <section class="match-summary">
 
-                <h2>
-                    Why it ranks highly
-                </h2>
+                {% set match_score = spot['match_score'] %}
 
-                <ul class="ranking-list">
-
-                    <li>
-                        <span class="positive">✓</span>
-                        Strong quiet-work environment
-                    </li>
-
-                    <li>
-                        <span class="positive">✓</span>
-                        Shortest estimated drive
-                    </li>
-
-                    <li>
-                        <span class="positive">✓</span>
-                        Above-average rating
-                    </li>
-
-                    <li>
-                        <span class="warning">△</span>
-                        Parking may be limited after 5 PM
-                    </li>
-
-                </ul>
-
-
-                <div class="ranking-actions">
-
-                    <button class="secondary-button">
-                        Add to compare
-                    </button>
-
-                    <button class="primary-button">
-                        Choose Juniper
-                    </button>
-
+                <div class="match-score-large">
+                    <strong>{{ "%.0f"|format(match_score) }}</strong>
+                    <span>FIT</span>
                 </div>
 
-            </aside>
+                <div class="match-summary-text">
+                    <h2>
+                        {% if match_score > 85 %}
+                            Excellent match for you
+                        {% elif match_score > 60 %}
+                            Good match for you
+                        {% else %}
+                            Lower match for your purpose
+                        {% endif %}
+                    </h2>
 
-        </section>
+                    <p>
+                        Based on your current priorities and estimated travel time.
+                    </p>
+                </div>
+
+            </section>
+
+
+            <section class="metric-grid">
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Travel time
+                    </p>
+
+                    <h3>
+                        {{ spot['travel_time_minutes'] }} min
+                    </h3>
+
+                    <p class="metric-note">
+                        Fastest
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Rating
+                    </p>
+
+                    <h3>
+                        {{ spot['rating'] }}
+                    </h3>
+
+                    <p class="metric-note">
+                        Excellent
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Price
+                    </p>
+
+                    <h3>
+                        {% if spot['price_level'] == 'PRICE_LEVEL_MODERATE' %}
+                            $$
+                        {% elif spot['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
+                            $$$
+                        {% elif spot['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
+                            $
+                        {% else %}
+                            No Price Range Found
+                        {% endif %}
+                    </h3>
+
+                    <p class="metric-note">
+                        Moderate
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Restrooms
+                    </p>
+
+                    <h3>
+                        {% if spot['restrooms'] %}
+                            Yes
+                        {% else %}
+                            None found
+                        {% endif %}
+                    </h3>
+
+                    <p class="metric-note">
+                    </p>
+
+                </article>
+
+            </section>
+
+
+            <section class="details-lower-grid">
+
+                <section class="matters-section">
+
+                    <h2>
+                        What matters here
+                    </h2>
+
+
+                    <div class="matter-row">
+
+                        <div class="matter-label">
+                            Wi-Fi reliability
+                        </div>
+
+                        <div class="matter-value">
+                            Very good
+                        </div>
+
+                        <div class="matter-meter">
+                            <div class="meter-track">
+                                <div class="meter-fill width-92"></div>
+                            </div>
+
+                            <span>92%</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="matter-row">
+
+                        <div class="matter-label">
+                            Outlet availability
+                        </div>
+
+                        <div class="matter-value">
+                            High
+                        </div>
+
+                        <div class="matter-meter">
+                            <div class="meter-track">
+                                <div class="meter-fill width-88"></div>
+                            </div>
+
+                            <span>88%</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="matter-row">
+
+                        <div class="matter-label">
+                            Quiet-work fit
+                        </div>
+
+                        <div class="matter-value">
+                            Excellent
+                        </div>
+
+                        <div class="matter-meter">
+                            <div class="meter-track">
+                                <div class="meter-fill width-95"></div>
+                            </div>
+
+                            <span>95%</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="matter-row">
+
+                        <div class="matter-label">
+                            Parking ease
+                        </div>
+
+                        <div class="matter-value">
+                            Moderate
+                        </div>
+
+                        <div class="matter-meter">
+                            <div class="meter-track">
+                                <div class="meter-fill width-68"></div>
+                            </div>
+
+                            <span>68%</span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <aside class="ranking-card">
+
+                    <!-- <h2>
+                        Why it ranks highly
+                    </h2>
+
+                    <ul class="ranking-list">
+
+                        <li>
+                            <span class="positive">✓</span>
+                            Strong quiet-work environment
+                        </li>
+
+                        <li>
+                            <span class="positive">✓</span>
+                            Shortest estimated drive
+                        </li>
+
+                        <li>
+                            <span class="positive">✓</span>
+                            Above-average rating
+                        </li>
+
+                        <li>
+                            <span class="warning">△</span>
+                            Parking may be limited after 5 PM
+                        </li>
+
+                    </ul> -->
+
+
+                    <div class="ranking-actions">
+
+                        <button class="secondary-button">
+                            Add to compare
+                        </button>
+
+                        <button class="primary-button">
+                            Choose {{ spot['name'] }}
+                        </button>
+
+                    </div>
+
+                </aside>
+
+            </section>
+        {% endif %}
 
     </div>
 
