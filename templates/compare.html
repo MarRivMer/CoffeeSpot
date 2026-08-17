@@ -88,25 +88,23 @@
                 </div>
                     
                 
-                <!-- Wi-Fi -->
                 <div class="compare-label alt-row">
                     Wi-Fi
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Excellent
+                    {{ spot1['wifi'] }}
                 </div>
                 
                 <div class="compare-value alt-row">
-                    Very good
+                    {{ spot2['wifi'] }}
                 </div>
 
                 <div class="compare-value alt-row">
-                    Weak
+                    {{ spot3['wifi'] }}
                 </div>
                 
                 
-                <!-- Outlets -->
                 <div class="compare-label">
                     Serves Breakfast
                 </div>
@@ -235,10 +233,14 @@
                 <p class="best-match-reason">
                     
                 </p>
-                
-                <button class="choose-button">
-                    Choose {{ spot1['name'] }}
-                </button>
+
+                <form method="POST">
+                    <button class="choose-button">
+                        Choose {{ spot1['name'] }}
+                    </button>
+
+                    <input type="hidden" id="chosenID" name="chosenID" value="{{ spot1['id'] }}">
+                </form>
                 
             </section>
 

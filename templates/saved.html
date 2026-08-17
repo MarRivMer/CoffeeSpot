@@ -41,157 +41,198 @@
 
         <section class="saved-content">
 
-            <!-- LEFT SIDE -->
             <section class="saved-list">
 
-                <!-- Saved Shop 1 -->
-                <article class="saved-card">
+                {% if saved_spots %}
+                    
+                    {% for place in saved_spots %}
+                    
+                        <article class="saved-card">
 
-                    <div class="saved-image image-green"></div>
+                            <div class="saved-image image-green"></div>
 
-                    <div class="saved-info">
+                            <div class="saved-info">
 
-                        <h3>
-                            Juniper Coffee House
-                        </h3>
+                                <h3>
+                                    {{ place['name'] }}
+                                </h3>
 
-                        <p class="saved-meta">
-                            Saved today · 0.8 mi · ★ 4.7
-                        </p>
+                                <p class="saved-meta">
+                                    {{ place['address'] }} · {{ place['travel_time_minutes'] }} min · ★ {{ place['rating'] }}
+                                </p>
 
-                        <div class="tag-row">
-                            <span class="tag">Quiet</span>
-                            <span class="tag">Outlets</span>
-                            <span class="tag">Wi-Fi</span>
+                                <div class="tag-row">
+                                    <!-- <span class="tag">Quiet</span>
+                                    <span class="tag">Outlets</span>
+                                    <span class="tag">Wi-Fi</span> -->
+                                </div>
+
+                                <a href="{{ url_for('details_screen') }}" class="details-link">
+                                    View details →
+                                </a>
+
+                            </div>
+
+                            <div class="match-score">
+                                <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
+                                <span>FIT</span>
+                            </div>
+
+                        </article>
+                    
+                    {% endfor %}
+
+                    
+                    <!-- <article class="saved-card">
+                        
+                        <div class="saved-image image-green"></div>
+                        
+                        <div class="saved-info">
+                            
+                            <h3>
+                                Juniper Coffee House
+                            </h3>
+                            
+                            <p class="saved-meta">
+                                Saved today · 0.8 mi · ★ 4.7
+                            </p>
+                            
+                            <div class="tag-row">
+                                <span class="tag">Quiet</span>
+                                <span class="tag">Outlets</span>
+                                <span class="tag">Wi-Fi</span>
+                            </div>
+                            
+                            <a href="{{ url_for('details_screen') }}" class="details-link">
+                                View details →
+                            </a>
+                            
                         </div>
-
-                        <a href="{{ url_for('details_screen') }}" class="details-link">
-                            View details →
-                        </a>
-
-                    </div>
-
-                    <div class="match-score">
-                        <strong>94</strong>
-                        <span>FIT</span>
-                    </div>
-
-                </article>
-
-
-                <!-- Saved Shop 2 -->
-                <article class="saved-card">
-
-                    <div class="saved-image image-orange"></div>
-
-                    <div class="saved-info">
-
-                        <h3>
-                            Common Grounds
-                        </h3>
-
-                        <p class="saved-meta">
-                            Saved yesterday · 1.2 mi · ★ 4.6
-                        </p>
-
-                        <div class="tag-row">
-                            <span class="tag">Study</span>
-                            <span class="tag">Late hours</span>
-                            <span class="tag">Pastries</span>
+                        
+                        <div class="match-score">
+                            <strong>94</strong>
+                            <span>FIT</span>
                         </div>
-
-                        <a href="{{ url_for('details_screen') }}" class="details-link">
-                            View details →
-                        </a>
-
-                    </div>
-
-                    <div class="match-score">
-                        <strong>91</strong>
-                        <span>FIT</span>
-                    </div>
-
-                </article>
-
+                        
+                    </article>
+                    
+                    <article class="saved-card">
+                        
+                        <div class="saved-image image-orange"></div>
+                        
+                        <div class="saved-info">
+                            
+                            <h3>
+                                Common Grounds
+                            </h3>
+                            
+                            <p class="saved-meta">
+                                Saved yesterday · 1.2 mi · ★ 4.6
+                            </p>
+                            
+                            <div class="tag-row">
+                                <span class="tag">Study</span>
+                                <span class="tag">Late hours</span>
+                                <span class="tag">Pastries</span>
+                            </div>
+                            
+                            <a href="{{ url_for('details_screen') }}" class="details-link">
+                                View details →
+                            </a>
+                            
+                        </div>
+                        
+                        <div class="match-score">
+                            <strong>91</strong>
+                            <span>FIT</span>
+                        </div>
+                        
+                    </article> -->
+                    
+                {% endif %}
             </section>
-
-
-            <!-- RIGHT SIDE -->
+            
+            
             <aside class="saved-sidebar">
+                    
+                {% if saved_spots %}
 
-                <section class="quick-decision-card">
-
-                    <h2>
-                        Quick decision
-                    </h2>
-
-                    <p class="sidebar-copy">
-                        Need a recommendation right now?
-                    </p>
-
-                    <div class="quick-result">
-
-                        <p class="quick-label">
-                            Best for focused work
+                    <section class="quick-decision-card">
+                        
+                        <h2>
+                            Quick decision
+                        </h2>
+                        
+                        <p class="sidebar-copy">
+                            Need a recommendation right now?
                         </p>
+                        
+                        <div class="quick-result">
+                            
+                            <p class="quick-label">
+                                Best for you!
+                            </p>
+                            
+                            <h3>
+                                {{ saved_spots[0]['name'] }}
+                            </h3>
+                            
+                            <p class="quick-meta">
+                                {{ "%.0f"|format(saved_spots[0]['match_score']) }} fit · {{ saved_spots[0]['travel_time_minutes'] }} min away
+                            </p>
+                            
+                        </div>
+                        
+                        <div class="quick-actions">
+                            
+                            <!-- <button class="secondary-button">
+                                Compare saved
+                            </button>
+                            
+                            <button class="primary-button">
+                                Pick for me
+                            </button> -->
+                            
+                        </div>
+                        
+                    </section>
 
-                        <h3>
-                            Juniper Coffee House
-                        </h3>
-
-                        <p class="quick-meta">
-                            94 fit · 7 min away
-                        </p>
-
-                    </div>
-
-                    <div class="quick-actions">
-
-                        <button class="secondary-button">
-                            Compare saved
-                        </button>
-
-                        <button class="primary-button">
-                            Pick for me
-                        </button>
-
-                    </div>
-
-                </section>
-
-
+                {% endif %}
+                    
+                
+                
                 <section class="preference-card">
-
+                    
                     <h2>
                         Your preference profile
                     </h2>
-
+                    
                     <div class="preference-row">
                         <span>Quiet / focus</span>
                         <strong>40%</strong>
                     </div>
-
+                    
                     <div class="preference-row">
                         <span>Travel time</span>
                         <strong>30%</strong>
                     </div>
-
+                    
                     <div class="preference-row">
                         <span>Rating</span>
                         <strong>20%</strong>
                     </div>
-
+                    
                     <div class="preference-row">
                         <span>Price</span>
                         <strong>10%</strong>
                     </div>
-
+                    
                 </section>
-
+                
             </aside>
-
+            
         </section>
-
+        
     </div>
-
-{% endblock %}
+    
+    {% endblock %}

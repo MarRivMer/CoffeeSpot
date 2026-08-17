@@ -74,6 +74,9 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
         close_time, hours_until_close = get_hours_until_close(opening_hours)
         parking_option = get_parking_type(place.get("parkingOptions"))
 
+        # - Get the real wifi status from API in future -
+        wifi = "Excellent"
+
         row = {
             "id": place.get("id"),
             "name": place.get("displayName", {}).get("text", "Unknown"),
@@ -83,6 +86,7 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
             "rating": place.get("rating"),
             "review_count": place.get("userRatingCount"),
             "price_level": place.get("priceLevel"),
+            "wifi": wifi,
             "open_now": open_now,
 
             "close_time": close_time.strftime("%I:%M %p")

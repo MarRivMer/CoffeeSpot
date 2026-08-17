@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_scss import Scss
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route, geocode_location
 from data.data_pipeline import create_coffee_dataframe
@@ -86,13 +86,27 @@ def discover_screen():
         
     return render_template('home.html', coffee_shops=coffee_spot_df, map_html=map_html, top_three_spots=top_three_spots)
 
-@app.route('/compare')
+@app.route('/compare', methods=["GET", "POST"])
 def compare_screen():
+    global saved_spots
+
+    if request.method == "POST":
+
+        # - Filter through df to find the chosen place -
+        chosenID = request.form.get('chosenID')
+        for place in coffee_spot_df:
+            if place['id'] == chosenID:
+                saved_spots.append(place)
+                break
+        
+        return redirect(url_for('saved_screen'))
+
     return render_template('compare.html', top_three_spots=top_three_spots)
 
 @app.route('/saved')
 def saved_screen():
-    return render_template('saved.html')
+    global saved_spots
+    return render_template('saved.html', saved_spots=saved_spots)
 
 @app.route('/details')
 def details_screen():
