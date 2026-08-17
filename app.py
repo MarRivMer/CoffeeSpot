@@ -92,13 +92,22 @@ def compare_screen():
 
     if request.method == "POST":
 
-        # - Filter through df to find the chosen place -
         chosenID = request.form.get('chosenID')
-        for place in coffee_spot_df:
-            if place['id'] == chosenID:
-                saved_spots.append(place)
+
+        # - Check if chosen is already saved -
+        spot_already_saved = False
+        for spot in saved_spots:
+            if chosenID == spot['id']:
+                spot_already_saved = True
                 break
-        
+
+        # - Filter through df to find the chosen place -
+        if not spot_already_saved:
+            for place in coffee_spot_df:
+                if place['id'] == chosenID:
+                    saved_spots.append(place)
+                    break
+            
         return redirect(url_for('saved_screen'))
 
     return render_template('compare.html', top_three_spots=top_three_spots)

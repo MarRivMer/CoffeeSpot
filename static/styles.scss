@@ -410,6 +410,13 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    cursor: pointer;
+}
+
+.compare-shop-card.selected {
+    border: 2px solid #6f4e37;
+    transform: translateY(-5px);
+    size: 1.3em;
 }
 
 .shop-heading {

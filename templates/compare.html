@@ -46,7 +46,12 @@
             {% if top_three_spots %}
 
                 {% for place in top_three_spots %}
-                    <article class="compare-shop-card">
+                    <article
+                        class="compare-shop-card {% if loop.first %}selected{% endif %}"
+                        data-id="{{ place['id'] }}"
+                        data-name="{{ place['name'] }}"
+                        onclick="selectShop(this)"
+                    >
 
                         <div class="shop-heading">
 
@@ -224,7 +229,7 @@
                         Best overall match
                     </p>
                     
-                    <h2>
+                    <h2 id="selectedShopName">
                         {{ spot1['name'] }}
                     </h2>
                     
@@ -235,7 +240,7 @@
                 </p>
 
                 <form method="POST">
-                    <button class="choose-button">
+                    <button class="choose-button" id="chooseButton" type="submit">
                         Choose {{ spot1['name'] }}
                     </button>
 
@@ -247,5 +252,28 @@
         {% endif %}
 
     </div>
+
+
+    <!-- Chosen Button Logic -->
+    <script>
+        function selectShop(card) {
+
+            document.querySelectorAll('.compare-shop-card').forEach(function(shop) {
+                shop.classList.remove('selected');
+            });
+
+            card.classList.add('selected');
+
+            const shopName = card.dataset.name;
+            const shopID = card.dataset.id;
+
+            document.getElementById('selectedShopName').textContent = shopName;
+
+            document.getElementById('chooseButton').textContent =
+                "Choose " + shopName;
+
+            document.getElementById('chosenID').value = shopID;
+            }
+    </script>
     
     {% endblock %}
