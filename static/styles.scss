@@ -377,6 +377,7 @@ input {
     padding: 28px 48px 48px;
 }
 
+
 .compare-header {
     margin-bottom: 30px;
 
@@ -392,41 +393,82 @@ input {
     }
 }
 
+
+
 .compare-grid {
     display: grid;
-    grid-template-columns: 200px repeat(3, 1fr);
     gap: 14px;
     align-items: stretch;
 }
 
-.compare-spacer {
-    min-height: 100px;
+
+// One shop
+.compare-grid-1 {
+    grid-template-columns:
+        180px
+        minmax(0, 1fr);
 }
+
+
+// Two shops
+.compare-grid-2 {
+    grid-template-columns:
+        180px
+        repeat(2, minmax(0, 1fr));
+}
+
+
+// Three shops
+.compare-grid-3 {
+    grid-template-columns:
+        180px
+        repeat(3, minmax(0, 1fr));
+}
+
+
+.compare-spacer {
+    grid-column: 1;
+    min-height: 110px;
+}
+
+
+// ------------------------------
+// Shop Cards
+// ------------------------------
 
 .compare-shop-card {
     position: relative;
+
     border: 1px solid $border;
     border-radius: 14px;
-    padding: 14px;
-    min-height: 100px;
+
+    padding: 14px 56px 14px 14px;
+    min-height: 110px;
+
     background: #fff;
 
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    gap: 14px;
+
     cursor: pointer;
 }
 
+
 .compare-shop-card.selected {
     border: 2px solid #6f4e37;
-    transform: translateY(-5px);
-    size: 1.3em;
+    transform: translateY(-4px);
 }
+
 
 .shop-heading {
     display: flex;
     gap: 10px;
     align-items: flex-start;
+
+    min-width: 0;
 
     h3 {
         margin: 0 0 6px;
@@ -440,28 +482,42 @@ input {
     }
 }
 
+
 .shop-color {
     width: 34px;
     height: 34px;
+
     border-radius: 10px;
+
     flex-shrink: 0;
 }
+
 
 .shop-green {
     background: #62866a;
 }
 
+
 .shop-orange {
     background: #bd7437;
 }
+
 
 .shop-beige {
     background: #e2c5ad;
 }
 
+
+// ------------------------------
+// Match Score
+// ------------------------------
+
 .compare-fit {
     width: 50px;
     height: 50px;
+
+    flex-shrink: 0;
+
     border-radius: 14px;
 
     background: $dark-brown;
@@ -483,34 +539,119 @@ input {
     }
 }
 
+
+// ------------------------------
+// Remove Button
+// ------------------------------
+
+.remove-shop-form {
+    position: absolute;
+
+    top: 7px;
+    right: 7px;
+}
+
+
+.remove-compare-button {
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: $muted;
+
+    font-size: 24px;
+    line-height: 1;
+
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    opacity: 0.7;
+
+    transition:
+        opacity 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.remove-compare-button:hover {
+    opacity: 1;
+    background: $row-bg;
+}
+
+
+
+
+.compare-row {
+    grid-column: 1 / -1;
+
+    display: grid;
+
+    // Use the exact columns from the parent grid.
+    grid-template-columns: subgrid;
+
+    align-items: stretch;
+}
+
+
 .compare-label,
 .compare-value {
-    min-height: 44px;
+    min-height: 48px;
+
+    padding: 12px 14px;
+
     display: flex;
     align-items: center;
-    padding: 0 14px;
+
     font-size: 0.82rem;
 }
+
 
 .compare-label {
     color: $muted;
 }
 
+
 .compare-value {
     color: $text;
 }
 
-.alt-row {
+
+.compare-row.alt-row > .compare-label,
+.compare-row.alt-row > .compare-value {
     background: $row-bg;
 }
 
-.compare-grid > .alt-row:first-of-type {
-    border-radius: 10px 0 0 10px;
+
+// Gives the alternating background cells
+// a subtle separation matching the grid.
+.compare-row.alt-row > * {
+    border-radius: 6px;
 }
 
-.compare-grid > .alt-row:nth-of-type(4n) {
-    border-radius: 0 10px 10px 0;
+
+
+
+.empty-compare {
+    padding: 70px 20px;
+    text-align: center;
+
+    h2 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
 }
+
+
+
 
 .best-match-banner {
     margin-top: 24px;
@@ -519,18 +660,23 @@ input {
     color: white;
 
     border-radius: 16px;
+
     padding: 20px;
 
     display: grid;
     grid-template-columns: 210px 1fr auto;
+
     gap: 26px;
+
     align-items: center;
 }
+
 
 .best-match-label {
     margin: 0 0 8px;
     font-size: 0.7rem;
 }
+
 
 .best-match-copy {
 
@@ -540,11 +686,15 @@ input {
     }
 }
 
+
 .best-match-reason {
     margin: 0;
+
     font-size: 0.82rem;
+
     opacity: 0.9;
 }
+
 
 .choose-button {
     border: none;
@@ -554,17 +704,18 @@ input {
     color: $dark-brown;
 
     padding: 13px 24px;
+
     font-weight: 600;
 
     cursor: pointer;
 }
 
-@media (max-width: 1000px) {
 
-    .compare-grid {
-        grid-template-columns: 150px repeat(3, minmax(180px, 1fr));
-        overflow-x: auto;
-    }
+// ------------------------------
+// Responsive
+// ------------------------------
+
+@media (max-width: 1000px) {
 
     .best-match-banner {
         grid-template-columns: 1fr;
@@ -575,20 +726,43 @@ input {
     }
 }
 
-@media (max-width: 700px) {
+
+@media (max-width: 800px) {
 
     .compare-page {
         padding: 24px;
     }
 
+    .compare-grid {
+        overflow-x: auto;
+    }
+
+    .compare-grid-1 {
+        grid-template-columns:
+            150px
+            minmax(260px, 1fr);
+    }
+
+    .compare-grid-2 {
+        grid-template-columns:
+            150px
+            repeat(2, minmax(260px, 1fr));
+    }
+
+    .compare-grid-3 {
+        grid-template-columns:
+            150px
+            repeat(3, minmax(260px, 1fr));
+    }
+}
+
+
+@media (max-width: 700px) {
+
     .top-nav {
         flex-direction: column;
         align-items: flex-start;
         gap: 18px;
-    }
-
-    .compare-grid {
-        grid-template-columns: 120px repeat(3, 180px);
     }
 
     .brand {

@@ -62,12 +62,13 @@
 
                 </div>
 
-
+                <!-- Add Functionality -->
                 <div class="hero-actions">
-
-                    <button class="primary-button">
-                        Save spot
-                    </button>
+                    {% if home_page %}
+                        <button class="primary-button">
+                            Save spot
+                        </button>
+                    {% endif %}
 
                 </div>
 
@@ -310,17 +311,19 @@
 
                     </ul> -->
 
-
+                    <!-- Add Functionality -->
                     <div class="ranking-actions">
 
                         <button class="secondary-button">
                             Add to compare
                         </button>
 
-                        <button class="primary-button">
-                            Choose {{ spot['name'] }}
-                        </button>
 
+                        {% if home_page %}
+                            <button class="primary-button">
+                                Choose {{ spot['name'] }}
+                            </button>
+                        {% endif %}
                     </div>
 
                 </aside>

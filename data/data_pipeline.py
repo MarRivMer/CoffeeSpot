@@ -80,6 +80,7 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
         row = {
             "id": place.get("id"),
             "name": place.get("displayName", {}).get("text", "Unknown"),
+            "photos": place.get("photos", []),
             "website_url": place.get("websiteUri", "Unknown"),
             "phone_number": place.get("nationalPhoneNumber", "Unkown"),
             "address": place.get("formattedAddress", "No address"),
@@ -112,15 +113,15 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
     return pd.DataFrame(rows)
 
 
-# if __name__ == '__main__':
-#     latitude = 28.5383
-#     longitude = -81.3792
-#     purpose = 'STUDY'
+if __name__ == '__main__':
+    latitude = 28.5383
+    longitude = -81.3792
+    purpose = 'STUDY'
 
-#     coffee_shops = get_nearby_coffee_shops(latitude=latitude, longitude=longitude)
-#     valid_shops, route_data = filter_valid_places_with_route(latitude, longitude, coffee_shops)
-#     coffee_spot_df = create_coffee_dataframe(valid_shops, route_data, purpose)
+    coffee_shops = get_nearby_coffee_shops(latitude=latitude, longitude=longitude)
+    valid_shops, route_data = filter_valid_places_with_route(latitude, longitude, coffee_shops)
+    coffee_spot_df = create_coffee_dataframe(valid_shops, route_data, purpose)
 
-#     coffee_spot_df.to_csv("data/coffee_df_test.csv")
+    coffee_spot_df.to_csv("data/coffee_df_test.csv")
 
-#     print(coffee_spot_df)
+    print(coffee_spot_df)

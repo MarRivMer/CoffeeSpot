@@ -146,6 +146,7 @@
 
                                     <form action="{{ url_for('details_screen') }}" method="POST">
                                         <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                        <input type="hidden" name="page" value="home">
 
                                         <button type="submit" class="details-link">
                                             View details →
@@ -204,6 +205,7 @@
 
                                     <form action="{{ url_for('details_screen') }}" method="POST">
                                         <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                        <input type="hidden" name="page" value="home">
 
                                         <button type="submit" class="details-link">
                                             View details →

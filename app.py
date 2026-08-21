@@ -13,10 +13,17 @@ coffee_spot_df = []
 map_html = None
 top_three_spots = []
 
+compare_spots = []
+compare_initialized = False
 
 @app.route('/', methods=["GET", "POST"])
 def discover_screen():
-    global coffee_spot_df, map_html, top_three_spots
+
+    global coffee_spot_df
+    global map_html
+    global top_three_spots
+    global compare_spots
+    global compare_initialized
     coffee_shops = []
 
     if request.method == "POST":
@@ -82,6 +89,9 @@ def discover_screen():
 
         coffee_spot_df = coffee_spot_df.to_dict(orient="records")
         top_three_spots = top_three_spots.to_dict(orient="records")
+
+        compare_spots = top_three_spots.copy()
+        compare_initialized = True
         
         
     return render_template('home.html', coffee_shops=coffee_spot_df, map_html=map_html, top_three_spots=top_three_spots)
@@ -89,28 +99,54 @@ def discover_screen():
 @app.route('/compare', methods=["GET", "POST"])
 def compare_screen():
     global saved_spots
+    global compare_spots
+    global compare_initialized
+    global coffee_spot_df
+    global top_three_spots
+
+    if not compare_initialized:
+
+        compare_spots = top_three_spots.copy()
+        compare_initialized = True
 
     if request.method == "POST":
 
-        chosenID = request.form.get('chosenID')
+        action = request.form.get("action")
+        place_id = request.form.get("place_id")
+       
+        if action == "remove":
 
-        # - Check if chosen is already saved -
-        spot_already_saved = False
-        for spot in saved_spots:
-            if chosenID == spot['id']:
-                spot_already_saved = True
-                break
+            compare_spots = [
+                place
+                for place in compare_spots
+                if place["id"] != place_id
+            ]
 
-        # - Filter through df to find the chosen place -
-        if not spot_already_saved:
-            for place in coffee_spot_df:
-                if place['id'] == chosenID:
-                    saved_spots.append(place)
-                    break
-            
-        return redirect(url_for('saved_screen'))
+        elif action == "choose":
 
-    return render_template('compare.html', top_three_spots=top_three_spots)
+            chosenID = request.form.get("chosenID")
+
+            spot_already_saved = any(
+                spot["id"] == chosenID
+                for spot in saved_spots
+            )
+
+            if not spot_already_saved:
+
+                for place in compare_spots:
+
+                    if place["id"] == chosenID:
+
+                        saved_spots.append(place)
+                        break
+
+            return redirect(url_for("saved_screen"))
+
+        return redirect(url_for("compare_screen"))
+
+    return render_template(
+        "compare.html",
+        compare_spots=compare_spots)
 
 @app.route('/saved')
 def saved_screen():
@@ -122,9 +158,22 @@ def details_screen():
     global coffee_spot_df, saved_spots
     coffee_spot = None
 
-
     if request.method == "POST":
         place_id = request.form.get("place_id")
+        page = request.form.get("page")
+
+        saved_page = False
+        compare_page = False
+        home_page = False
+
+        if page == "saved":
+            saved_page = True
+        elif page == "home":
+            home_page = True
+
+        print(f'page: {page}')
+        print(f"Home page: {home_page} ")
+        print(f"Saved page: {saved_page}")
 
         # Check current coffee shop results
         for place in coffee_spot_df:
@@ -140,7 +189,27 @@ def details_screen():
                     break    
         
 
-    return render_template('details.html', spot=coffee_spot)
+    return render_template('details.html', spot=coffee_spot, saved_page=saved_page, home_page=home_page)
+
+
+def add_to_compare(place_id):
+    global compare_spots, coffee_spot_df
+
+    if len(compare_spots) < 3:
+    
+        already_added = any(
+            place["id"] == place_id
+            for place in compare_spots
+        )
+    
+        if not already_added:
+    
+            for place in coffee_spot_df:
+    
+                if place["id"] == place_id:
+                    compare_spots.append(place)
+                    break
+
 
 
 

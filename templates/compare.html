@@ -18,9 +18,19 @@
             </div>
 
             <nav class="nav-links">
-                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
-                <a href="" class="active">Compare</a>
-                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+
+                <a href="{{ url_for('discover_screen') }}" class="not-active">
+                    Discover
+                </a>
+
+                <a href="{{ url_for('compare_screen') }}" class="active">
+                    Compare
+                </a>
+
+                <a href="{{ url_for('saved_screen') }}" class="not-active">
+                    Saved
+                </a>
+
             </nav>
 
         </header>
@@ -39,13 +49,15 @@
         </section>
 
 
-        <section class="compare-grid">
+        {% if compare_spots %}
 
-            <div class="compare-spacer"></div>
+            <section class="compare-grid compare-grid-{{ compare_spots|length }}">
 
-            {% if top_three_spots %}
+                <div class="compare-spacer"></div>
 
-                {% for place in top_three_spots %}
+
+                {% for place in compare_spots %}
+
                     <article
                         class="compare-shop-card {% if loop.first %}selected{% endif %}"
                         data-id="{{ place['id'] }}"
@@ -58,195 +70,264 @@
                             <div class="shop-color shop-green"></div>
 
                             <div>
-                                <h3>{{ place['name'] }}</h3>
-                                <p>★ {{ place['rating'] }}</p>
+
+                                <h3>
+                                    {{ place['name'] }}
+                                </h3>
+
+                                <p>
+                                    ★ {{ place['rating'] }}
+                                </p>
+
                             </div>
 
                         </div>
 
+
                         <div class="compare-fit">
-                            <strong>{{ "%.0f"|format(place["match_score"]) }}</strong>
-                            <span>FIT</span>
+
+                            <strong>
+                                {{ "%.0f"|format(place["match_score"]) }}
+                            </strong>
+
+                            <span>
+                                FIT
+                            </span>
+
                         </div>
 
+
+                        <form
+                            method="POST"
+                            class="remove-shop-form"
+                            onclick="event.stopPropagation();"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="action"
+                                value="remove"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="place_id"
+                                value="{{ place['id'] }}"
+                            >
+
+                            <button
+                                type="submit"
+                                class="remove-compare-button"
+                                aria-label="Remove {{ place['name'] }}"
+                                title="Remove {{ place['name'] }}"
+                            >
+                                &times;
+                            </button>
+
+                        </form>
+
                     </article>
+
                 {% endfor %}
-                
-                {% set spot1 = top_three_spots[0] %}
-                {% set spot2 = top_three_spots[1] %}
-                {% set spot3 = top_three_spots[2] %}
 
-                <div class="compare-label alt-row">
-                    Drive time
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {{ spot1['travel_time_minutes']|round|int }} min
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {{ spot2['travel_time_minutes']|round|int }} min
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {{ spot3['travel_time_minutes']|round|int }} min
-                </div>
-                    
-                
-                <div class="compare-label alt-row">
-                    Wi-Fi
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {{ spot1['wifi'] }}
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {{ spot2['wifi'] }}
-                </div>
 
-                <div class="compare-value alt-row">
-                    {{ spot3['wifi'] }}
-                </div>
-                
-                
-                <div class="compare-label">
-                    Serves Breakfast
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot1['serves_breakfast'] }}
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot2['serves_breakfast'] }}
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot3['serves_breakfast'] }}
-                </div>
-                
-                
-                <div class="compare-label alt-row">
-                    Price
-                </div>
+                <div class="compare-row alt-row">
 
-                <div class="compare-value alt-row">
-                    {% if spot1['price_level'] == 'PRICE_LEVEL_MODERATE' %}
-                        $$
-                    {% elif spot1['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
-                        $$$
-                    {% elif spot1['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
-                        $
-                    {% else %}
-                        No Price Range Found
-                    {% endif %}
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {% if spot2['price_level'] == 'PRICE_LEVEL_MODERATE' %}
-                        $$
-                    {% elif spot2['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
-                        $$$
-                    {% elif spot2['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
-                        $
-                    {% else %}
-                        No Price Range Found
-                    {% endif %}
-                </div>
-                
-                <div class="compare-value alt-row">
-                    {% if spot3['price_level'] == 'PRICE_LEVEL_MODERATE' %}
-                        $$
-                    {% elif spot3['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
-                        $$$
-                    {% elif spot3['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
-                        $
-                    {% else %}
-                        No Price Range Found
-                    {% endif %}
-                </div>
-                
-                
-                <div class="compare-label">
-                    Outdoor Seating
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot1['outdoor_seating'] }}
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot2['outdoor_seating'] }}
-                </div>
-                
-                <div class="compare-value">
-                    {{ spot3['outdoor_seating'] }}
+                    <div class="compare-label">
+                        Drive time
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['travel_time_minutes']|round|int }} min
+                        </div>
+
+                    {% endfor %}
+
                 </div>
 
 
-                <div class="compare-label">
-                    Parking
+                <!-- WIFI -->
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Wi-Fi
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['wifi'] }}
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                <div class="compare-value">
-                    {{ spot1['parking_options'] }}
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Serves Breakfast
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['serves_breakfast'] }}
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                <div class="compare-value">
-                    {{ spot2['parking_options'] }}
+
+
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Price
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+
+                            {% if place['price_level'] == 'PRICE_LEVEL_MODERATE' %}
+
+                                $$
+
+                            {% elif place['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
+
+                                $$$
+
+                            {% elif place['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
+
+                                $
+
+                            {% else %}
+
+                                No Price Range Found
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                <div class="compare-value">
-                    {{ spot3['parking_options'] }}
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Outdoor Seating
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['outdoor_seating'] }}
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                
-                <div class="compare-label alt-row">
-                    Open late
+
+
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Parking
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['parking_options'] }}
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                <div class="compare-value alt-row">
-                    Until {{ spot1['close_time'] }}
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Open late
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            Until {{ place['close_time'] }}
+                        </div>
+
+                    {% endfor %}
+
                 </div>
-                
-                <div class="compare-value alt-row">
-                    Until {{ spot2['close_time'] }}
-                </div>
-                
-                <div class="compare-value alt-row">
-                    Until {{ spot3['close_time'] }}
-                </div>
-                
+
             </section>
-            
-            
+
+
+            {% set first_spot = compare_spots[0] %}
+
+
             <section class="best-match-banner">
-                
+
                 <div class="best-match-copy">
-                    
+
                     <p class="best-match-label">
-                        Best overall match
+                        Selected coffee shop
                     </p>
-                    
+
                     <h2 id="selectedShopName">
-                        {{ spot1['name'] }}
+                        {{ first_spot['name'] }}
                     </h2>
-                    
+
                 </div>
-                
-                <p class="best-match-reason">
-                    
-                </p>
+
+
+                <p class="best-match-reason"></p>
+
 
                 <form method="POST">
-                    <button class="choose-button" id="chooseButton" type="submit">
-                        Choose {{ spot1['name'] }}
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="choose"
+                    >
+
+                    <button
+                        class="choose-button"
+                        id="chooseButton"
+                        type="submit"
+                    >
+                        Choose {{ first_spot['name'] }}
                     </button>
 
-                    <input type="hidden" id="chosenID" name="chosenID" value="{{ spot1['id'] }}">
+                    <input
+                        type="hidden"
+                        id="chosenID"
+                        name="chosenID"
+                        value="{{ first_spot['id'] }}"
+                    >
+
                 </form>
-                
+
+            </section>
+
+
+        {% else %}
+
+            <section class="empty-compare">
+
+                <h2>
+                    There are no shops to compare at this time.
+                </h2>
+
             </section>
 
         {% endif %}
@@ -254,26 +335,39 @@
     </div>
 
 
-    <!-- Chosen Button Logic -->
     <script>
-        function selectShop(card) {
 
-            document.querySelectorAll('.compare-shop-card').forEach(function(shop) {
+    function selectShop(card) {
+
+        document
+            .querySelectorAll('.compare-shop-card')
+            .forEach(function(shop) {
                 shop.classList.remove('selected');
             });
 
-            card.classList.add('selected');
 
-            const shopName = card.dataset.name;
-            const shopID = card.dataset.id;
+        card.classList.add('selected');
 
-            document.getElementById('selectedShopName').textContent = shopName;
 
-            document.getElementById('chooseButton').textContent =
-                "Choose " + shopName;
+        const shopName = card.dataset.name;
+        const shopID = card.dataset.id;
 
-            document.getElementById('chosenID').value = shopID;
-            }
+
+        document
+            .getElementById('selectedShopName')
+            .textContent = shopName;
+
+
+        document
+            .getElementById('chooseButton')
+            .textContent = "Choose " + shopName;
+
+
+        document
+            .getElementById('chosenID')
+            .value = shopID;
+    }
+
     </script>
-    
-    {% endblock %}
+
+{% endblock %}

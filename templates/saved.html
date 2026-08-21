@@ -69,6 +69,7 @@
 
                                 <form action="{{ url_for('details_screen') }}" method="POST">
                                     <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                    <input type="hidden" name="page" value="saved">
 
                                     <button type="submit" class="details-link">
                                         View details →
@@ -212,7 +213,7 @@
                     </h2>
                     
                     <div class="preference-row">
-                        <span>Quiet / focus</span>
+                        <span>Social</span>
                         <strong>40%</strong>
                     </div>
                     
