@@ -155,61 +155,93 @@ def saved_screen():
 
 @app.route('/details', methods=["GET", "POST"])
 def details_screen():
-    global coffee_spot_df, saved_spots
+    global coffee_spot_df
+    global saved_spots
+
     coffee_spot = None
 
+    saved_page = False
+    compare_page = False
+    home_page = False
+
     if request.method == "POST":
+
         place_id = request.form.get("place_id")
         page = request.form.get("page")
-
-        saved_page = False
-        compare_page = False
-        home_page = False
+        button_pressed = request.form.get("button")
 
         if page == "saved":
             saved_page = True
+
         elif page == "home":
             home_page = True
 
-        print(f'page: {page}')
-        print(f"Home page: {home_page} ")
-        print(f"Saved page: {saved_page}")
+        elif page == "compare":
+            compare_page = True
 
-        # Check current coffee shop results
         for place in coffee_spot_df:
-            if place['id'] == place_id:
+            if place["id"] == place_id:
                 coffee_spot = place
                 break
 
-        # If not found, check saved spots
         if coffee_spot is None:
             for place in saved_spots:
-                if place['id'] == place_id:
-                    coffee_spot = place
-                    break    
-        
 
-    return render_template('details.html', spot=coffee_spot, saved_page=saved_page, home_page=home_page)
-
-
-def add_to_compare(place_id):
-    global compare_spots, coffee_spot_df
-
-    if len(compare_spots) < 3:
-    
-        already_added = any(
-            place["id"] == place_id
-            for place in compare_spots
-        )
-    
-        if not already_added:
-    
-            for place in coffee_spot_df:
-    
                 if place["id"] == place_id:
-                    compare_spots.append(place)
+                    coffee_spot = place
                     break
 
+        if button_pressed == "saved":
+            add_to_saved(coffee_spot)
+            return redirect(url_for("saved_screen"))
+
+        elif button_pressed == "compare":
+            add_to_compare(coffee_spot)
+            return redirect(url_for("compare_screen"))
+
+        elif button_pressed == "chosen":
+            add_to_saved(coffee_spot)
+            return redirect(url_for("saved_screen"))
+
+    return render_template(
+        "details.html",
+        spot=coffee_spot,
+        saved_page=saved_page,
+        home_page=home_page,
+        compare_page=compare_page
+    )
+
+
+def add_to_compare(coffee_spot):
+    global compare_spots
+    if coffee_spot is None:
+        return
+    
+    if len(compare_spots) >= 3:
+        return
+    
+    already_added = any(
+        place["id"] == coffee_spot["id"]
+        for place in compare_spots
+    )
+
+    if not already_added:
+        compare_spots.append(coffee_spot)
+
+
+def add_to_saved(coffee_spot):
+    global saved_spots
+
+    if coffee_spot is None:
+        return
+
+    already_saved = any(
+        place["id"] == coffee_spot["id"]
+        for place in saved_spots
+    )
+
+    if not already_saved:
+        saved_spots.append(coffee_spot)
 
 
 

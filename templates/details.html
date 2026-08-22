@@ -65,9 +65,13 @@
                 <!-- Add Functionality -->
                 <div class="hero-actions">
                     {% if home_page %}
-                        <button class="primary-button">
-                            Save spot
-                        </button>
+                        <form method="POST">
+                            <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                            <input type="hidden" name="button" value="saved">
+                            <button type="submit" class="primary-button">
+                                Save spot
+                            </button>
+                        </form>
                     {% endif %}
 
                 </div>
@@ -194,8 +198,11 @@
                         What matters here
                     </h2>
 
+                    <div class="matter-label">
+                        {{ spot['review_summary'] }}
+                    </div>
 
-                    <div class="matter-row">
+                    <!-- <div class="matter-row">
 
                         <div class="matter-label">
                             Wi-Fi reliability
@@ -276,7 +283,7 @@
                             <span>68%</span>
                         </div>
 
-                    </div>
+                    </div> -->
 
                 </section>
 
@@ -313,16 +320,23 @@
 
                     <!-- Add Functionality -->
                     <div class="ranking-actions">
-
-                        <button class="secondary-button">
-                            Add to compare
-                        </button>
-
+                        <form method="POST">  
+                            <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                            <input type="hidden" name="button" value="compare">
+                            <button type="submit" class="secondary-button">
+                                Add to compare
+                            </button>
+                        
+                        </form>
 
                         {% if home_page %}
-                            <button class="primary-button">
-                                Choose {{ spot['name'] }}
-                            </button>
+                            <form method="POST">  
+                                <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                                <input type="hidden" name="button" value="chosen">
+                                <button type="submit" class="primary-button">
+                                    Choose {{ spot['name'] }}
+                                </button>
+                            </form>
                         {% endif %}
                     </div>
 
