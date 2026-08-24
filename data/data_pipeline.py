@@ -1,6 +1,10 @@
+import os
 from datetime import datetime, timezone
 import pandas as pd
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route
+
+PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
+PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby"
 
 
 def get_hours_until_close(opening_hours):
@@ -76,6 +80,8 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
         review_summary = place.get("reviewSummary", {}).get("text", {}).get("text", "No summary")
         ai_summary = place.get("generativeSummary", {}).get("overview", {}).get("text", "No summary")
 
+        # photo_url = get_place_photo(place_id=place.get("id"))
+
         # - Get the real wifi status from API in future -
         wifi = "Excellent"
 
@@ -117,15 +123,15 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
     return pd.DataFrame(rows)
 
 
-if __name__ == '__main__':
-    latitude = 28.5383
-    longitude = -81.3792
-    purpose = 'STUDY'
+# if __name__ == '__main__':
+#     latitude = 28.5383
+#     longitude = -81.3792
+#     purpose = 'STUDY'
 
-    coffee_shops = get_nearby_coffee_shops(latitude=latitude, longitude=longitude)
-    valid_shops, route_data = filter_valid_places_with_route(latitude, longitude, coffee_shops)
-    coffee_spot_df = create_coffee_dataframe(valid_shops, route_data, purpose)
+#     coffee_shops = get_nearby_coffee_shops(latitude=latitude, longitude=longitude)
+#     valid_shops, route_data = filter_valid_places_with_route(latitude, longitude, coffee_shops)
+#     coffee_spot_df = create_coffee_dataframe(valid_shops, route_data, purpose)
 
-    coffee_spot_df.to_csv("data/coffee_df_test.csv")
+#     coffee_spot_df.to_csv("data/coffee_df_test.csv")
 
-    print(coffee_spot_df)
+#     print(coffee_spot_df)
