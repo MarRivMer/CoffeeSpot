@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Coffee Spot - Register</title>
+    <link rel="stylesheet" href="../static/styles.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="auth-page">
+
+    <header class="top-nav">
+
+        <div class="brand">
+            Coffee Spot
+        </div>
+
+        <nav class="nav-links">
+            <a href="{{ url_for('discover_screen') }}">Discover</a>
+            <a href="{{ url_for('compare_screen') }}">Compare</a>
+            <a href="{{ url_for('saved_screen') }}">Saved</a>
+        </nav>
+
+    </header>
+
+
+    <main class="auth-layout">
+
+        <section class="auth-visual register-visual">
+
+            <div class="visual-overlay">
+
+                <div class="visual-copy">
+
+                    <h2>
+                        Better coffee decisions.<br>
+                        Every time.
+                    </h2>
+
+                    <p>
+                        Save your favorite spots, compare options, and let Coffee Spot do the matching for you.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="auth-card">
+
+            <div class="auth-card-header">
+
+                <h1>
+                    Create your account
+                </h1>
+
+                <p>
+                    Sign up to save spots, compare, and get personalized recommendations.
+                </p>
+
+                {% if errors %}
+                <div>
+                    <ul>
+                    {% for e in errors %}
+                        <li style="color: rgb(255, 75, 75);">{{e}}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+            </div>
+
+
+            <form class="auth-form" method="POST">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+                            ◉
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirm_password">
+                        Confirm password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Confirm your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+                            ◉
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-primary-button"
+                >
+                    Sign up
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+
+                Already have an account?
+
+                <a href="{{ url_for('login') }}">
+                    Log in
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <footer class="auth-footer">
+
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact</a>
+        </div>
+
+        <p>
+            © 2026 Coffee Spot
+        </p>
+
+    </footer>
+
+</div>
+
+{% endblock %}
