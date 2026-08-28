@@ -83,6 +83,8 @@
 
             <form class="auth-form" method="POST">
 
+                <input type="hidden" name="next" value="{{request.args.get('next', '')}}">
+
                 <div class="form-group">
 
                     <label for="email">
