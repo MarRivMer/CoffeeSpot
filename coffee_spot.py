@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 from sqlalchemy import text
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route, geocode_location
 from data.data_pipeline import create_coffee_dataframe
@@ -108,6 +108,12 @@ def CreateApp():
                 return redirect(url_for("discover_screen"))
 
         return render_template('login.html', errors=errors)
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        flash("You have been logged out") 
+        return redirect(url_for('discover_screen'))
 
     @login_manager.user_loader
     def load_user(user_id):
