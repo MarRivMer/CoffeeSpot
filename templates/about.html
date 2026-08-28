@@ -1,0 +1,39 @@
+{% extends 'base.html'%} 
+
+
+
+{% block head %}
+    <title>Coffee Spot</title>
+    <link rel="stylesheet" href="../static/styles.css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="page-shell">
+        
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+                <a href="" class="active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#" class="not-active">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
+                {% endif %}
+            </nav>
+
+        </header>
+
+        <h1> This is the about page! </h1>
+        <p>
+            Describe what Coffee Spot is about here :]
+        </p>
+
+    </div>
+{% endblock %}

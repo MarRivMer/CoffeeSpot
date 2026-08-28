@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
 from sqlalchemy import text
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route, geocode_location
 from data.data_pipeline import create_coffee_dataframe
 import folium
 from ML.predictor import predict_coffee_spot
 import re
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -18,7 +20,6 @@ map_html = None
 top_three_spots = []
 compare_spots = []
 compare_initialized = False
-
 
 
 class User(UserMixin, db.Model):
@@ -52,11 +53,6 @@ def CreateApp():
     with app.app_context():
         db.create_all()
 
-
-    @app.route('/login', methods=["GET", "POST"])
-    def login():
-        return render_template('login.html')
-
     @app.route('/register', methods=["GET", "POST"])
     def register():
         errors = []
@@ -77,14 +73,45 @@ def CreateApp():
                 errors.append("Passwords do not match")
 
             if not errors:
-                print("Successful input recieved")
-                print(f"Data recieved: {username}, {email}")
+                try:
+                    pw_hash = generate_password_hash(password)
+                    user = User(username=username, email=email, password_hash=pw_hash)
+                    db.session.add(user)
+                    db.session.commit()
+
+                    return redirect(url_for('login'))
+                
+                except IntegrityError:
+                    db.session.rollback()
+                    errors.append("Username or email is already registered")
         
         return render_template('register.html', errors=errors)
 
+    @app.route('/login', methods=["GET", "POST"])
+    def login():
+        errors = []
+
+        if request.method == "POST":
+            email = (request.form.get("email") or "").strip()
+            password = (request.form.get("password") or "")
+
+            if not email:
+                errors.append("Email is required")
+            if not password:
+                errors.append("Password is required")
+            if not errors:
+                user = User.query.filter_by(email=email).first()
+            if not user or not check_password_hash(user.password_hash, password):
+                errors.append("Invalid email or password")
+            else:
+                login_user(user)
+                return redirect(url_for("discover_screen"))
+
+        return render_template('login.html', errors=errors)
+
     @login_manager.user_loader
     def load_user(user_id):
-        return None
+        return User.query.get(user_id)
 
     @app.route('/', methods=["GET", "POST"])
     def discover_screen():
@@ -155,7 +182,7 @@ def CreateApp():
             top_three_spots = top_three_spots.to_dict(orient="records")
             compare_spots = top_three_spots.copy()
             compare_initialized = True
-            
+
         return render_template('home.html', coffee_shops=coffee_spot_df, map_html=map_html, top_three_spots=top_three_spots)
 
     @app.route('/compare', methods=["GET", "POST"])
@@ -201,6 +228,7 @@ def CreateApp():
         return render_template("compare.html", compare_spots=compare_spots)
 
     @app.route('/saved')
+    @login_required
     def saved_screen():
         global saved_spots
         return render_template('saved.html', saved_spots=saved_spots)
@@ -261,6 +289,9 @@ def CreateApp():
             compare_page=compare_page
         )
 
+    @app.route('/about')
+    def about_screen():
+        return render_template("about.html")
 
     def add_to_compare(coffee_spot):
         global compare_spots
@@ -285,6 +316,5 @@ def CreateApp():
 
         if not already_saved:
             saved_spots.append(coffee_spot)
-
 
     return app

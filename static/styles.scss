@@ -1472,37 +1472,11 @@ input {
 // Authentification Screens
 .auth-page {
     min-height: 100vh;
-    background: $surface;
-    padding: 36px 48px 28px;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.brand {
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: -1px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 32px;
-    font-size: 0.85rem;
-
-    a {
-        color: $muted;
-
-        &:hover {
-            color: $text;
-        }
-    }
+    background-color: $surface;
+    margin: 22px auto;
+    width: calc(100% - 40px);
+    max-width: 1450px;
+    padding: 28px 48px 48px;
 }
 
 .auth-layout {
@@ -1819,16 +1793,6 @@ input {
 
     .auth-page {
         padding: 24px;
-    }
-
-    .top-nav {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-
-    .brand {
-        font-size: 2rem;
     }
 
     .auth-layout {

@@ -19,6 +19,12 @@
                 <a href="" class="active">Discover</a>
                 <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
                 <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+                <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#" class="not-active">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
+                {% endif %}
             </nav>
 
         </header>
