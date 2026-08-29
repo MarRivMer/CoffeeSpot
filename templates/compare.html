@@ -32,7 +32,11 @@
                 </a>
                 <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
                 {% if current_user.is_authenticated %}
-                    <a href="#">Logout</a>
+                    <a href="{{ url_for('logout') }}"
+                        class="not-active"
+                        onclick="return confirmLogout();">
+                            Logout
+                    </a>
                 {% else %}
                     <a href="{{ url_for('login') }}">Login</a>
                 {% endif %}

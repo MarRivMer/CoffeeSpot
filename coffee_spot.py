@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 from sqlalchemy import text
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route, geocode_location
 from data.data_pipeline import create_coffee_dataframe
@@ -10,6 +10,8 @@ from ML.predictor import predict_coffee_spot
 import re
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
+from urllib.parse import urlparse
+
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -52,6 +54,13 @@ def CreateApp():
 
     with app.app_context():
         db.create_all()
+
+    def _is_safe_local_path(target: str) -> bool:
+        if not target:
+            return False
+        parts = urlparse(target)
+        return parts.scheme == "" and parts.netloc == "" and target.startswith("/")
+
 
     @app.route('/register', methods=["GET", "POST"])
     def register():
@@ -105,9 +114,18 @@ def CreateApp():
                 errors.append("Invalid email or password")
             else:
                 login_user(user)
+                next_url = request.form.get("next") or request.args.get("next") or ""
+                if _is_safe_local_path(next_url):
+                    return redirect(next_url)
                 return redirect(url_for("discover_screen"))
 
         return render_template('login.html', errors=errors)
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        flash("You have been logged out") 
+        return redirect(url_for('discover_screen'))
 
     @login_manager.user_loader
     def load_user(user_id):
