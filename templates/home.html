@@ -1,14 +1,258 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Spot ☕</title>
-</head>
-<body>
-    <h1>Welcome to Coffee Spot ☕</h1>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam eaque rem nam assumenda quod enim corrupti iure, beatae, minima velit animi vel facilis. Dolores nemo asperiores accusantium nisi animi sit?
-    </p>
-</body>
-</html>
+{% extends 'base.html'%} 
+
+
+{% block head %} 
+    <title>Coffee Spot</title>
+    <link rel="stylesheet" href="../static/styles.css">
+{% endblock %} 
+
+{% block body %} 
+
+    <div class="page-shell">
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+                <a href="" class="active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+                <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#" class="not-active">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
+                {% endif %}
+            </nav>
+
+        </header>
+
+        <main class="discover-page">
+            <section class="discover-header">
+
+                <h1>
+                    Find your next coffee spot
+                </h1>
+
+                <p>
+                    Compare cafés by fit, travel time, vibe, and the things you actually care about.
+                </p>
+
+            </section>
+
+            <section class="search-section">
+
+                <form method="POST">
+
+                    <div class="search-row">
+
+                        <div class="search-input-wrapper">
+                            <span class="search-icon">
+                                ⌕
+                            </span>
+
+                            <input
+                                type="text"
+                                placeholder="Search a neighborhood or address"
+                                id="location"
+                                name="location"
+                                required
+                            >
+                        </div>
+
+                            <button type="button" class="location-button">
+                                Use my location
+                            </button>
+
+                            <button type="submit" class="search-button">
+                                Search
+                            </button>
+
+                        </div>
+
+                        <div class="filter-row">
+
+                            <button type="button" class="filter-pill active" data-purpose="BEST FIT">
+                                Best fit
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="QUICK COFFEE">
+                                Quick Coffee
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="MEETING">
+                                Meeting
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="WORK">
+                                Work
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="STUDY">
+                                Study
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="SOCIAL">
+                                Social
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="RELAX">
+                                Relax
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="CUSTOM">
+                                Custom
+                            </button>
+
+                        </div>
+
+                        <input type="hidden" id="purpose" name="purpose" value="BEST FIT">
+
+                </form> 
+
+            </section>
+
+            <section class="content-grid">
+                <section class="results-panel">
+                    <div class="results-header">
+                        <div>
+                            <h2>
+                                Top Recommended
+                            </h2>
+
+                            <p>
+                                Cafés nearby · ranked for you
+                            </p>
+                        </div>
+                    </div>
+                    {% if top_three_spots %}
+
+                        {% for place in top_three_spots %}
+                            <article class="coffee-card">
+
+                                <div class="coffee-image image-green"></div>
+
+                                <div class="coffee-info">
+
+                                    <h3>
+                                        {{ place['name'] }}
+                                    </h3>
+
+                                    <p class="coffee-meta">
+                                        {{ place['address'] }} · {{ place['travel_time_minutes']|round|int }} min drive · ★ {{ place['rating'] }}
+                                    </p>
+
+                                    <div class="tag-row">
+                                        <span class="tag">Quiet</span>
+                                        <span class="tag">Outlets</span>
+                                        <span class="tag">Wi-Fi</span>
+                                    </div>
+
+                                    <form action="{{ url_for('details_screen') }}" method="POST">
+                                        <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                        <input type="hidden" name="page" value="home">
+
+                                        <button type="submit" class="details-link">
+                                            View details →
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                                <div class="match-score">
+                                    <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
+                                    <span>FIT</span>
+                                </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    {% endif %}
+                    
+                    <br>
+                    
+                    <div class="results-header">
+                        <div>
+                            <h2>
+                                All Matches
+                            </h2>
+
+                            <p>
+                                Cafés nearby
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if coffee_shops %}
+
+                        {% for place in coffee_shops %}
+                            <article class="coffee-card">
+
+                                <div class="coffee-image image-green"></div>
+
+                                <div class="coffee-info">
+
+                                    <h3>
+                                        {{ place['name'] }}
+                                    </h3>
+
+                                    <p class="coffee-meta">
+                                        {{ place['address'] }} · {{ place['travel_time_minutes']|round|int }} min drive · ★ {{ place['rating'] }}
+                                    </p>
+
+                                    <div class="tag-row">
+                                        <span class="tag">Quiet</span>
+                                        <span class="tag">Outlets</span>
+                                        <span class="tag">Wi-Fi</span>
+                                    </div>
+
+                                    <form action="{{ url_for('details_screen') }}" method="POST">
+                                        <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                        <input type="hidden" name="page" value="home">
+
+                                        <button type="submit" class="details-link">
+                                            View details →
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                                <!-- <div class="match-score">
+                                    <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
+                                    <span>FIT</span>
+                                </div> -->
+
+                            </article>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                </section>
+
+                <section class="map-panel">
+
+                    <div class="map-label">
+                        Map preview
+                    </div>
+
+                    {% if map_html %}
+                        <div class="real-map">
+                            {{ map_html | safe }}
+                        </div>
+                    {% endif %}
+
+                </section>
+
+            </section>
+            
+        </main>
+
+    </div>
+    <script src="../static/js/script.js"></script>
+{% endblock %} 
+
+

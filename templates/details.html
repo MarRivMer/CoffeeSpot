@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Coffee Spot - Details</title>
+    <link rel="stylesheet" href="../static/styles.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="details-page">
+
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+                <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
+                {% endif %}
+            </nav>
+
+        </header>
+
+
+        <a href="{{ url_for('discover_screen') }}" class="back-link">
+            ← Back to results
+        </a>
+
+        {% if spot %}
+
+            <section class="shop-hero">
+
+                <div class="shop-hero-image">
+                    <div class="shop-logo-text">
+                        <!-- <strong> {{ spot['name'] }} </strong> -->
+                        <!-- <span>COFFEE HOUSE</span> -->
+                    </div>
+                </div>
+
+
+                <div class="shop-hero-info">
+
+                    <h1>
+                        {{ spot['name'] }}
+                    </h1>
+
+                    <p class="shop-meta">
+                        {{ spot['address'] }} · {{ spot['travel_time_minutes'] }} min drive · ★ {{ spot['rating'] }} ({{ spot['review_count'] }})
+                    </p>
+
+                    <div class="tag-row">
+                        <!-- <span class="tag">Quiet</span>
+                        <span class="tag">Wi-Fi</span>
+                        <span class="tag">Outlets</span> -->
+                    </div>
+
+                    <p class="open-status">
+                        Open until {{ spot['close_time'] }}
+                    </p>
+
+                </div>
+
+                <!-- Add Functionality -->
+                <div class="hero-actions">
+                    {% if home_page %}
+                        <form method="POST">
+                            <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                            <input type="hidden" name="button" value="saved">
+                            <button type="submit" class="primary-button">
+                                Save spot
+                            </button>
+                        </form>
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <section class="match-summary">
+
+                {% set match_score = spot['match_score'] %}
+
+                <div class="match-score-large">
+                    <strong>{{ "%.0f"|format(match_score) }}</strong>
+                    <span>FIT</span>
+                </div>
+
+                <div class="match-summary-text">
+                    <h2>
+                        {% if match_score > 85 %}
+                            Excellent match for you
+                        {% elif match_score > 60 %}
+                            Good match for you
+                        {% else %}
+                            Lower match for your purpose
+                        {% endif %}
+                    </h2>
+
+                    <p>
+                        Based on your current priorities and estimated travel time.
+                    </p>
+                </div>
+
+            </section>
+
+
+            <section class="metric-grid">
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Travel time
+                    </p>
+
+                    <h3>
+                        {{ spot['travel_time_minutes'] }} min
+                    </h3>
+
+                    <p class="metric-note">
+                        Fastest
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Rating
+                    </p>
+
+                    <h3>
+                        {{ spot['rating'] }}
+                    </h3>
+
+                    <p class="metric-note">
+                        Excellent
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Price
+                    </p>
+
+                    <h3>
+                        {% if spot['price_level'] == 'PRICE_LEVEL_MODERATE' %}
+                            $$
+                        {% elif spot['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
+                            $$$
+                        {% elif spot['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
+                            $
+                        {% else %}
+                            No Price Range Found
+                        {% endif %}
+                    </h3>
+
+                    <p class="metric-note">
+                        Moderate
+                    </p>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <p class="metric-label">
+                        Restrooms
+                    </p>
+
+                    <h3>
+                        {% if spot['restrooms'] %}
+                            Yes
+                        {% else %}
+                            None found
+                        {% endif %}
+                    </h3>
+
+                    <p class="metric-note">
+                    </p>
+
+                </article>
+
+            </section>
+
+
+            <section class="details-lower-grid">
+
+                <section class="matters-section">
+
+                    <h2>
+                        What matters here
+                    </h2>
+
+                    <div class="matter-label">
+                        {{ spot['review_summary'] }}
+                    </div>
+
+                </section>
+
+
+                <aside class="ranking-card">
+
+                    <div class="ranking-actions">
+                        <form method="POST">  
+                            <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                            <input type="hidden" name="button" value="compare">
+                            <button type="submit" class="secondary-button">
+                                Add to compare
+                            </button>
+                        
+                        </form>
+
+                        {% if home_page %}
+                            <form method="POST">  
+                                <input type="hidden" name="place_id" value="{{ spot['id'] }}">
+                                <input type="hidden" name="button" value="chosen">
+                                <button type="submit" class="primary-button">
+                                    Choose {{ spot['name'] }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+
+                </aside>
+
+            </section>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Coffee Spot - Compare</title>
+    <link rel="stylesheet" href="../static/styles.css">
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="compare-page">
+
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+
+                <a href="{{ url_for('discover_screen') }}" class="not-active">
+                    Discover
+                </a>
+
+                <a href="{{ url_for('compare_screen') }}" class="active">              
+                    Compare
+                </a>
+
+                <a href="{{ url_for('saved_screen') }}" class="not-active">
+                    Saved
+                </a>
+                <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+
+            </nav>
+
+        </header>
+
+
+        <section class="compare-header">
+
+            <h1>
+                Compare your best options
+            </h1>
+
+            <p>
+                See the tradeoffs without bouncing between tabs.
+            </p>
+
+        </section>
+
+
+        {% if compare_spots %}
+
+            <section class="compare-grid compare-grid-{{ compare_spots|length }}">
+
+                <div class="compare-spacer"></div>
+
+
+                {% for place in compare_spots %}
+
+                    <article
+                        class="compare-shop-card {% if loop.first %}selected{% endif %}"
+                        data-id="{{ place['id'] }}"
+                        data-name="{{ place['name'] }}"
+                        onclick="selectShop(this)"
+                    >
+
+                        <div class="shop-heading">
+
+                            <div class="shop-color shop-green"></div>
+
+                            <div>
+
+                                <h3>
+                                    {{ place['name'] }}
+                                </h3>
+
+                                <p>
+                                    ★ {{ place['rating'] }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="compare-fit">
+
+                            <strong>
+                                {{ "%.0f"|format(place["match_score"]) }}
+                            </strong>
+
+                            <span>
+                                FIT
+                            </span>
+
+                        </div>
+
+
+                        <form
+                            method="POST"
+                            class="remove-shop-form"
+                            onclick="event.stopPropagation();"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="action"
+                                value="remove"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="place_id"
+                                value="{{ place['id'] }}"
+                            >
+
+                            <button
+                                type="submit"
+                                class="remove-compare-button"
+                                aria-label="Remove {{ place['name'] }}"
+                                title="Remove {{ place['name'] }}"
+                            >
+                                &times;
+                            </button>
+
+                        </form>
+
+                    </article>
+
+                {% endfor %}
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Drive time
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['travel_time_minutes']|round|int }} min
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- WIFI -->
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Wi-Fi
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['wifi'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Serves Breakfast
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['serves_breakfast'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Price
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+
+                            {% if place['price_level'] == 'PRICE_LEVEL_MODERATE' %}
+
+                                $$
+
+                            {% elif place['price_level'] == 'PRICE_LEVEL_EXPENSIVE' %}
+
+                                $$$
+
+                            {% elif place['price_level'] == 'PRICE_LEVEL_INEXPENSIVE' %}
+
+                                $
+
+                            {% else %}
+
+                                No Price Range Found
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Outdoor Seating
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['outdoor_seating'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Parking
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['parking_options'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="compare-row alt-row">
+
+                    <div class="compare-label">
+                        Open late
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            Until {{ place['close_time'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+            {% set first_spot = compare_spots[0] %}
+
+
+            <section class="best-match-banner">
+
+                <div class="best-match-copy">
+
+                    <p class="best-match-label">
+                        Selected coffee shop
+                    </p>
+
+                    <h2 id="selectedShopName">
+                        {{ first_spot['name'] }}
+                    </h2>
+
+                </div>
+
+
+                <p class="best-match-reason"></p>
+
+
+                <form method="POST">
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="choose"
+                    >
+
+                    <button
+                        class="choose-button"
+                        id="chooseButton"
+                        type="submit"
+                    >
+                        Choose {{ first_spot['name'] }}
+                    </button>
+
+                    <input
+                        type="hidden"
+                        id="chosenID"
+                        name="chosenID"
+                        value="{{ first_spot['id'] }}"
+                    >
+
+                </form>
+
+            </section>
+
+
+        {% else %}
+
+            <section class="empty-compare">
+
+                <h2>
+                    There are no shops to compare at this time.
+                </h2>
+
+            </section>
+
+        {% endif %}
+
+    </div>
+
+
+    <script>
+
+    function selectShop(card) {
+
+        document
+            .querySelectorAll('.compare-shop-card')
+            .forEach(function(shop) {
+                shop.classList.remove('selected');
+            });
+
+
+        card.classList.add('selected');
+
+
+        const shopName = card.dataset.name;
+        const shopID = card.dataset.id;
+
+
+        document
+            .getElementById('selectedShopName')
+            .textContent = shopName;
+
+
+        document
+            .getElementById('chooseButton')
+            .textContent = "Choose " + shopName;
+
+
+        document
+            .getElementById('chosenID')
+            .value = shopID;
+    }
+
+    </script>
+
+{% endblock %}

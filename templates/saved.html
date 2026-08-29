@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Coffee Spot - Saved</title>
+    <link rel="stylesheet" href="../static/styles.css">
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="saved-page">
+
+        <header class="top-nav">
+
+            <div class="brand">
+                Coffee Spot ☕
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
+                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+                <a href="" class="active">Saved</a>
+                <a href="{{ url_for('about_screen') }}" class="not-active">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="#">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
+                {% endif %}
+            </nav>
+
+        </header>
+
+
+        <section class="saved-header">
+
+            <h1>
+                Your saved coffee spots
+            </h1>
+
+            <p>
+                A shortlist for the next time you need a place to work, meet, or reset.
+            </p>
+
+        </section>
+
+
+        <section class="saved-content">
+
+            <section class="saved-list">
+
+                {% if saved_spots %}
+                    
+                    {% for place in saved_spots %}
+                    
+                        <article class="saved-card">
+
+                            <div class="saved-image image-green"></div>
+
+                            <div class="saved-info">
+
+                                <h3>
+                                    {{ place['name'] }}
+                                </h3>
+
+                                <p class="saved-meta">
+                                    {{ place['address'] }} · {{ place['travel_time_minutes'] }} min · ★ {{ place['rating'] }}
+                                </p>
+
+                                <div class="tag-row">
+                                    <!-- <span class="tag">Quiet</span>
+                                    <span class="tag">Outlets</span>
+                                    <span class="tag">Wi-Fi</span> -->
+                                </div>
+
+                                <form action="{{ url_for('details_screen') }}" method="POST">
+                                    <input type="hidden" name="place_id" value="{{ place['id'] }}">
+                                    <input type="hidden" name="page" value="saved">
+
+                                    <button type="submit" class="details-link">
+                                        View details →
+                                    </button>
+                                </form>
+
+                            </div>
+
+                            <div class="match-score">
+                                <strong> {{ "%.0f"|format(place["match_score"]) }} </strong>
+                                <span>FIT</span>
+                            </div>
+
+                        </article>
+                    
+                    {% endfor %}
+                    
+                {% endif %}
+            </section>
+            
+            
+            <aside class="saved-sidebar">
+                    
+                {% if saved_spots %}
+
+                    <section class="quick-decision-card">
+                        
+                        <h2>
+                            Quick decision
+                        </h2>
+                        
+                        <p class="sidebar-copy">
+                            Need a recommendation right now?
+                        </p>
+                        
+                        <div class="quick-result">
+                            
+                            <p class="quick-label">
+                                Best for you!
+                            </p>
+                            
+                            <h3>
+                                {{ saved_spots[0]['name'] }}
+                            </h3>
+                            
+                            <p class="quick-meta">
+                                {{ "%.0f"|format(saved_spots[0]['match_score']) }} fit · {{ saved_spots[0]['travel_time_minutes'] }} min away
+                            </p>
+                            
+                        </div>
+                        
+                        <div class="quick-actions">
+                            
+                            <!-- <button class="secondary-button">
+                                Compare saved
+                            </button>
+                            
+                            <button class="primary-button">
+                                Pick for me
+                            </button> -->
+                            
+                        </div>
+                        
+                    </section>
+
+                {% endif %}
+                    
+                
+                
+                <section class="preference-card">
+                    
+                    <h2>
+                        Your preference profile
+                    </h2>
+                    
+                    <div class="preference-row">
+                        <span>Social</span>
+                        <strong>0%</strong>
+                    </div>
+                    
+                    <div class="preference-row">
+                        <span>Travel time</span>
+                        <strong>0%</strong>
+                    </div>
+                    
+                    <div class="preference-row">
+                        <span>Rating</span>
+                        <strong>0%</strong>
+                    </div>
+                    
+                    <div class="preference-row">
+                        <span>Price</span>
+                        <strong>0%</strong>
+                    </div>
+                    
+                </section>
+                
+            </aside>
+            
+        </section>
+        
+    </div>
+    
+    {% endblock %}
