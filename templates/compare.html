@@ -77,7 +77,15 @@
 
                         <div class="shop-heading">
 
-                            <div class="shop-color shop-green"></div>
+                            <div class="shop-color
+                                {% if loop.index == 1 %}
+                                    image-green
+                                {% elif loop.index == 2 %}
+                                    image-orange
+                                {% elif loop.index == 3 %}
+                                    image-yellow
+                                {% endif %}
+                            "></div>
 
                             <div>
 

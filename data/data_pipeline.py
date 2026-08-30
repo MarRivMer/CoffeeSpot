@@ -91,6 +91,8 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
             "photos": place.get("photos", []),
             "website_url": place.get("websiteUri", "Unknown"),
             "phone_number": place.get("nationalPhoneNumber", "Unkown"),
+            "latitude": place.get("location", {}).get("latitude"),
+            "longitude": place.get("location", {}).get("longitude"),
             "address": place.get("formattedAddress", "No address"),
             "rating": place.get("rating"),
             "review_count": place.get("userRatingCount"),
