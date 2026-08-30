@@ -1,43 +1,184 @@
-{% extends 'base.html'%} 
-
-
+{% extends 'base.html' %}
 
 {% block head %}
-    <title>Coffee Spot</title>
+    <title>Coffee Spot - About</title>
     <link rel="stylesheet" href="../static/styles.css">
 {% endblock %}
 
-
 {% block body %}
-    <div class="page-shell">
-        
-        <header class="top-nav">
 
-            <div class="brand">
-                Coffee Spot ☕
+<div class="about-page">
+
+    <header class="top-nav">
+
+        <div class="brand">
+            Coffee Spot ☕
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
+            <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
+            <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
+            <a href="" class="active">About</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}"
+                    class="not-active"
+                    onclick="return confirmLogout();">
+                        Logout
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="not-active">Login</a>
+            {% endif %}
+        </nav>
+
+
+    </header>
+
+
+    <main>
+
+        <section class="about-hero">
+
+            <div class="about-copy">
+
+                <p class="eyebrow">
+                    About Coffee Spot
+                </p>
+
+                <h1>
+                    Better coffee decisions.<br>
+                    Every time.
+                </h1>
+
+                <p class="about-description">
+                    Coffee Spot is here to help you find the right Café's for you! The
+                    spot recommendations are tailored to the purpose and experience
+                    you are looking for when searching for a spot. We want you to have
+                    the best experience possible!
+                </p>
+
+                <a href="{{ url_for('discover_screen') }}" class="primary-button">
+                    Start exploring
+                </a>
+
             </div>
-            <nav class="nav-links">
-                <a href="{{ url_for('discover_screen') }}" class="not-active">Discover</a>
-                <a href="{{ url_for('compare_screen') }}" class="not-active">Compare</a>
-                <a href="{{ url_for('saved_screen') }}" class="not-active">Saved</a>
-                <a href="" class="active">About</a>
-                {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('logout') }}"
-                        class="not-active"
-                        onclick="return confirmLogout();">
-                            Logout
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('login') }}" class="not-active">Login</a>
-                {% endif %}
-            </nav>
 
-        </header>
 
-        <h1> This is the about page! </h1>
-        <p>
-            Describe what Coffee Spot is about here :]
-        </p>
+            <div class="about-image">
+                
+            </div>
 
-    </div>
+        </section>
+
+
+        <section class="values-section">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">
+                    Our values
+                </p>
+
+                <h2>
+                    Built only for the best experiences
+                </h2>
+
+            </div>
+
+
+            <div class="values-grid">
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+                        ♙
+                    </div>
+
+                    <div>
+                        <h3>
+                            User priority
+                        </h3>
+
+                        <p>
+                            Coffee Spot is design to find shops near you according to
+                            travel time, mood, ratings, and much more to fit with your
+                            profile.
+                        </p>
+                    </div>
+
+                </article>
+
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+                        ⌖
+                    </div>
+
+                    <div>
+                        <h3>
+                            Local & Reliable
+                        </h3>
+
+                        <p>
+                            Coffee Spot uses trusted data to search for the nearest and best
+                            spots. We also check real reviews, rating, and use AI to provide accurate
+                            recommendations for you.
+                        </p>
+                    </div>
+
+                </article>
+
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+                        ☷
+                    </div>
+
+                    <div>
+                        <h3>
+                            Personalized
+                        </h3>
+
+                        <p>
+                            Your preferences are the highest determination & priority for your
+                            results, the more you use Coffee Spot the more we recognize your
+                            preferences and can better recommend and predict the coffee spots
+                            that suit your needs!
+                        </p>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <section class="mission-card">
+
+            <div class="mission-illustration">
+                <div class="cup-placeholder">
+                    ☕
+                </div>
+            </div>
+
+            <div class="mission-copy">
+
+                <p class="eyebrow">
+                    Our mission
+                </p>
+
+                <h2>
+                    Finding coffee spots should be effortless and efficient.
+                </h2>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
 {% endblock %}
