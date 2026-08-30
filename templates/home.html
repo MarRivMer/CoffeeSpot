@@ -106,8 +106,32 @@
                                 Relax
                             </button>
 
-                            <button type="button" class="filter-pill" data-purpose="CUSTOM">
-                                Custom
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Quiet & Cozy
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Breakfast
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Date
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Drive Thru
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Budget Friendly
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Outdoor
+                            </button>
+
+                            <button type="button" class="filter-pill" data-purpose="BEST FIT">
+                                Aesthetic
                             </button>
 
                         </div>
@@ -136,7 +160,15 @@
                         {% for place in top_three_spots %}
                             <article class="coffee-card">
 
-                                <div class="coffee-image image-green"></div>
+                                <div class="coffee-image
+                                    {% if loop.index == 1 %}
+                                        image-green
+                                    {% elif loop.index == 2 %}
+                                        image-orange
+                                    {% elif loop.index == 3 %}
+                                        image-yellow
+                                    {% endif %}
+                                "></div>
 
                                 <div class="coffee-info">
 

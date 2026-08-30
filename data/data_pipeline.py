@@ -1,5 +1,6 @@
 import os
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import pandas as pd
 from APIs import get_nearby_coffee_shops, filter_valid_places_with_route
 
@@ -19,13 +20,16 @@ def get_hours_until_close(opening_hours):
     if not next_close_time:
         return None, 0.0
 
-    close_time = datetime.fromisoformat(next_close_time.replace("Z", "+00:00"))
+    close_time_utc = datetime.fromisoformat(next_close_time.replace("Z", "+00:00"))
 
-    current_time = datetime.now(timezone.utc)
-    difference = close_time - current_time
+    eastern_time = ZoneInfo("America/New_York")
+    close_time_local = close_time_utc.astimezone(eastern_time)
+    current_time = datetime.now(eastern_time)
+
+    difference = close_time_local - current_time
     hours_remaining = difference.total_seconds() / 3600
 
-    return close_time, max(hours_remaining, 0.0)
+    return close_time_local, max(hours_remaining, 0.0)
 
 def get_parking_type(parking_options):
     if not parking_options:
@@ -91,6 +95,8 @@ def create_coffee_dataframe(valid_shops, route_data, purpose):
             "photos": place.get("photos", []),
             "website_url": place.get("websiteUri", "Unknown"),
             "phone_number": place.get("nationalPhoneNumber", "Unkown"),
+            "latitude": place.get("location", {}).get("latitude"),
+            "longitude": place.get("location", {}).get("longitude"),
             "address": place.get("formattedAddress", "No address"),
             "rating": place.get("rating"),
             "review_count": place.get("userRatingCount"),

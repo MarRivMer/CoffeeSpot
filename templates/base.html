@@ -9,7 +9,30 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-    {% block body %} {% endblock %}
+    <div class="site-wrapper">
+
+        <main class="site-content">
+            {% block body %}{% endblock %}
+        </main>
+
+
+        <footer class="site-footer">
+
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+
+            <p>
+                © 2026 Coffee Spot
+            </p>
+
+        </footer>
+
+    </div>
+
+
     <script>
         function confirmLogout() {
             return confirm("You are about to be logged out of your account. Do you wish to continue?");

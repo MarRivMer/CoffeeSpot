@@ -77,7 +77,15 @@
 
                         <div class="shop-heading">
 
-                            <div class="shop-color shop-green"></div>
+                            <div class="shop-color
+                                {% if loop.index == 1 %}
+                                    image-green
+                                {% elif loop.index == 2 %}
+                                    image-orange
+                                {% elif loop.index == 3 %}
+                                    image-yellow
+                                {% endif %}
+                            "></div>
 
                             <div>
 
@@ -144,7 +152,7 @@
                 <div class="compare-row alt-row">
 
                     <div class="compare-label">
-                        Drive time
+                        Drive Time (Min)
                     </div>
 
                     {% for place in compare_spots %}
@@ -158,11 +166,10 @@
                 </div>
 
 
-                <!-- WIFI -->
                 <div class="compare-row">
 
                     <div class="compare-label">
-                        Wi-Fi
+                        Wi-Fi (Quality)
                     </div>
 
                     {% for place in compare_spots %}
@@ -179,24 +186,7 @@
                 <div class="compare-row alt-row">
 
                     <div class="compare-label">
-                        Serves Breakfast
-                    </div>
-
-                    {% for place in compare_spots %}
-
-                        <div class="compare-value">
-                            {{ place['serves_breakfast'] }}
-                        </div>
-
-                    {% endfor %}
-
-                </div>
-
-
-                <div class="compare-row">
-
-                    <div class="compare-label">
-                        Price
+                        Price ($ - $$$)
                     </div>
 
                     {% for place in compare_spots %}
@@ -227,6 +217,21 @@
 
                 </div>
 
+                <div class="compare-row">
+
+                    <div class="compare-label">
+                        Serves Breakfast
+                    </div>
+
+                    {% for place in compare_spots %}
+
+                        <div class="compare-value">
+                            {{ place['serves_breakfast'] }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
 
                 <div class="compare-row alt-row">
 
@@ -265,7 +270,7 @@
                 <div class="compare-row alt-row">
 
                     <div class="compare-label">
-                        Open late
+                        Open late (Time)
                     </div>
 
                     {% for place in compare_spots %}
